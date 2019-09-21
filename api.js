@@ -1,19 +1,16 @@
-let client_id = null;
-let client_secret = null;
-
 const request = require('request');
+const rp = require('request-promise-native');
 const fs = require('fs');
 
-let API = {
-  client_id: null,
-  client_secret: null,
-  init(req, res) {
-    const clientInfo = fs.readFileSync('client_info.json', 'utf8');
-    const client = JSON.parse(clientInfo);
-    client_id = client.client_id;
-    client_secret = client.client_secret;
+class API {
+  constructor(code) {
+    this.code = code;
+    this.bearerToken = null
+  }
+  init(){
+    this.client = this.readClientInfo();
 
-    const body = `grant_type=authorization_code&code=${req.query.code}&redirect_uri=http://localhost:8080/manager.html&client_id=${client_id}&client_secret=${client_secret}`;
+    const body = `grant_type=authorization_code&code=${this.code}&redirect_uri=http://localhost:8080/manager.html&client_id=${this.client.client_id}&client_secret=${this.client.client_secret}`;
     const headers = {
       'Content-Type': 'application/x-www-form-urlencoded'
     };
@@ -21,29 +18,43 @@ let API = {
     const options = {
       headers: headers,
       body: body
-    }
-
-    request.post("https://accounts.spotify.com/api/token", options, function(error, response) {
-      let body = JSON.parse(response.body);
-      console.log(body);
-      const bearerToken = body.access_token;
-      request.get("https://api.spotify.com/v1/me/player", {
-        auth: {
-          'bearer': bearerToken
-        }
-      }, function(error, response) {
-        console.log(error);
-        console.log(response.statusCode);
-        console.log(response.body);
-
+    };
+    return new Promise((resolve,reject)=>{
+        rp.post("https://accounts.spotify.com/api/token", options)
+      .then(response => {
+        console.log(response);
+        let body = JSON.parse(response);
+        console.log(body.access_token);
+        this.bearerToken = body.access_token;
+        resolve("Access token is set");
+      })
+      .catch(error => {
+        reject(error);
       });
     });
-    res.render('manager.ejs');
+  }
+  readClientInfo() {
+    const clientInfo = fs.readFileSync('client_info.json', 'utf8');
+    const client = JSON.parse(clientInfo);
+    return client;
+  }
 
-  },
+  currrentPlayer() {
+        console.log("after waiting");
+    request.get("https://api.spotify.com/v1/me/player", {
+      auth: {
+        'bearer': this.bearerToken
+      }
+    }, function(error, response) {
+      console.log(error);
+      console.log(response.statusCode);
+      console.log(response.body);
 
-  reqCurrentTrack(){
-    
+    });
+  }
+
+  getToken() {
+
   }
 };
 
