@@ -41,16 +41,9 @@ class API {
 
   currrentPlayer() {
         console.log("after waiting");
-    request.get("https://api.spotify.com/v1/me/player", {
-      auth: {
-        'bearer': this.bearerToken
-      }
-    }, function(error, response) {
-      console.log(error);
-      console.log(response.statusCode);
-      console.log(response.body);
-
-    });
+    rp.get("https://api.spotify.com/v1/me/player", {auth: {'bearer': this.bearerToken}})
+    .then((response) => console.log(response))
+    .catch((errorr) => console.log(error));
   }
 
   getToken() {
