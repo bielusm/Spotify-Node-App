@@ -6,6 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "nodemonConfig": {
+    "ignore": ["writeMe.json"]
+  },
   "author": "Mitchell Bielus",
   "license": "ISC",
   "dependencies": {
@@ -14,4 +17,5 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7"
   }
+
 }

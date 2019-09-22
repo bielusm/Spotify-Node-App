@@ -10,7 +10,8 @@ app.get('/manager.html', function(req,res){
   api = new API(req.query.code);
   promise = api.init();
   promise.then((response)=>{
-      api.currrentPlayer();
+      api.getPlaylistByID("4TL6CsXn7AFFrgMWMxq1XL");
+      //api.currrentPlayer();
   })
   .catch(error=>console.log(error))
   res.render('manager.ejs');
