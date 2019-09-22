@@ -1,3 +1,3 @@
 # Spotify-Node-App
 
-An app to practice querying the spotify API. 
+A Node JS app to practice querying the spotify API. 
