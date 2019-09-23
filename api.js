@@ -7,6 +7,7 @@ class API {
     this.code = code;
     this.bearerToken = null
     this.currentTrackUri = null;
+    this.playLists = [];
   }
   init() {
     this.client = this.readClientInfo();
@@ -51,20 +52,19 @@ class API {
         fs.writeFileSync("./json/currrentPlayer.json", response, ('utf8'));
         const json = JSON.parse(response);
         this.currentTrackUri = json.item.uri;
-        console.log(this.currentTrackUri);
         resolve("track set");
       })
       .catch((error) => reject(error));
   });
 }
 
-  getPlaylistByID(ID) {
-    // rp.get("https://api.spotify.com/v1/playlists/4TL6CsXn7AFFrgMWMxq1XL/", {auth: {'bearer': this.bearerToken}})
-    // .then((response) => {console.log(response)
-    // fs.writeFileSync('writeMe.json',response,('utf8'))})
-    // .catch((errorr) => console.log(error));
-
+  addPlaylistByID(ID) {
+    this.playLists.push(ID);
+    console.log(this.playLists);
     return new Promise((resolve,reject) => {
+    if(fs.existsSync("./json/" + ID + ".json"))
+      resolve("Playlist already cached");
+
     let tracks = [];
     let param = "?fields=next,items(track(name,artists,external_urls,id,uri,album(name)))"
     rp.get(`https://api.spotify.com/v1/playlists/${ID}/tracks${param}`, {
@@ -117,17 +117,28 @@ class API {
       .catch((error) => reject(error));
     })
   }
-  currentTrackInPlaylists(ID){
+  currentTrackInPlaylists(){
+    this.playLists.forEach(playlist => {
+      if(this.currentTrackInPlaylist(playlist))
+        console.log("Track is in playlist " + playlist);
+      else
+        console.log("Track is not in playlist " + playlist);
+    });
+  }
+
+  currentTrackInPlaylist(ID){
     let buf = fs.readFileSync(`./json/${ID}.json`,('utf8'));
     const json = JSON.parse(buf);
-    console.log(json.tracks[0][0]);
     let i = 0;
+    let equal = false;
     json.tracks.forEach(item =>{
       item.forEach(item =>{
-        i++;
+        if(item.track.uri === this.currentTrackUri)
+            equal = true;
+  //      console.log(typeof item.track.uri);
       });
     });
-    console.log("i: " + i);
+    return equal;
   }
 }
 

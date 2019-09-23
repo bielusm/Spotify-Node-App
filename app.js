@@ -7,12 +7,14 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.get('/manager.html', function(req,res){
+  const everything = "78capR2HryfdSE2JallXDb";
+  const rap = "4TL6CsXn7AFFrgMWMxq1XL";
   api = new API(req.query.code);
-  const id = "78capR2HryfdSE2JallXDb";
   api.init()
-  .then(()=> api.getPlaylistByID(id))
+  .then(()=> api.addPlaylistByID(everything))
+  .then(()=> api.addPlaylistByID(rap))
   .then(() => api.currrentPlayer())
-  .then(() => api.currentTrackInPlaylists(id))
+  .then(() => console.log(api.currentTrackInPlaylists()))
   .catch(error=>console.log(error));
   res.render('manager.ejs');
 });
