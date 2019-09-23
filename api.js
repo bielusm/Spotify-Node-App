@@ -46,6 +46,8 @@ class API {
         }
       })
       .then((response) => {
+        if(response === "")
+          reject("Nothing is playing");
         fs.writeFileSync("./json/currrentPlayer.json", response, ('utf8'));
         const json = JSON.parse(response);
         this.currentTrackUri = json.item.uri;
@@ -63,6 +65,7 @@ class API {
     // .catch((errorr) => console.log(error));
 
     return new Promise((resolve,reject) => {
+    let tracks = [];
     let param = "?fields=next,items(track(name,artists,external_urls,id,uri,album(name)))"
     rp.get(`https://api.spotify.com/v1/playlists/${ID}/tracks${param}`, {
         auth: {
@@ -70,23 +73,29 @@ class API {
         }
       })
       .then((response) => {
-        fs.writeFileSync("./json/" + ID + ".json", response, ('utf8'));
         const json = JSON.parse(response);
+        tracks.push(json.items);
         const next = json['next'];
         if (next != null)
         {
-          this.getNextTracks(ID, next)
-          .then(response=>resolve(response))
+          this.getNextTracks(ID, next, tracks)
+          .then(response=>{
+            let buffer = {tracks: tracks}
+            fs.writeFileSync("./json/" + ID + ".json", JSON.stringify(buffer), ('utf8'));
+            resolve(response);})
           .catch(error=>reject(error));
       }
     else
+    {
       resolve("fetch finished");
+              fs.writeFileSync("./json/" + ID + ".json", response, ('utf8'));
+    }
     })
       .catch((error) => reject(error));
     });
   }
 
-  getNextTracks(ID, next) {
+  getNextTracks(ID, next, tracks) {
     return new Promise((resolve,reject) => {
     rp.get(next, {
         auth: {
@@ -94,11 +103,12 @@ class API {
         }
       })
       .then((response) => {
-        fs.appendFileSync("./json/" + ID + ".json", response, ('utf8'));
         const json = JSON.parse(response);
+        tracks.push(json.items);
+
         const next = json['next'];
         if (next != null)
-          this.getNextTracks(ID, next)
+          this.getNextTracks(ID, next, tracks)
           .then(response=>resolve(response))
           .catch(error=>reject(error));
         else
@@ -110,9 +120,14 @@ class API {
   currentTrackInPlaylists(ID){
     let buf = fs.readFileSync(`./json/${ID}.json`,('utf8'));
     const json = JSON.parse(buf);
-    json.items.forEach(item =>{
-      console.log(item.track.uri, "json");
+    console.log(json.tracks[0][0]);
+    let i = 0;
+    json.tracks.forEach(item =>{
+      item.forEach(item =>{
+        i++;
+      });
     });
+    console.log("i: " + i);
   }
 }
 
