@@ -17,12 +17,25 @@ class API {
       .then((json) => {
         if(json === "")
           reject("Nothing is playing");
-        console.log(json);
         this.currentTrackUri = json.item.uri;
-        console.log(this.currentTrackUri);
-        resolve("track set");
+        resolve(json.item);
       })
       .catch((error) => reject(error));
+  });
+}
+  getPlaylists(){
+    return new Promise((resolve,reject) => {
+    fetch('https://api.spotify.com/v1/me/playlists', {
+        headers: {'Authorization': "Bearer " + this.bearerToken},
+         method: "GET"
+      })
+      .then(data => data.json())
+      .then((json) => {
+          resolve(json);
+      })
+      .catch(error=>{
+        reject(error);
+      });
   });
 }
 
