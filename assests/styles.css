@@ -1,0 +1,8 @@
+.playlist:hover{
+  border: solid 1px black;
+}
+
+.clicked
+{
+    border: solid 1px green;
+}

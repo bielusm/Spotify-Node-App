@@ -1,11 +1,10 @@
 import API from './api.js';
 
-
 const getPlaylistsBtn = document.querySelector("#getPlaylistsBtn");
-const playlistUl = document.querySelector("#playlists");
+const playListCheckList = document.querySelector("#playListCheckList");
 const loginButton = document.querySelector("#login");
 const currentTrackBtn = document.querySelector("#currentTrackBtn");
-
+const savePlaylistBtn = document.querySelector("#savePlaylistBtn");
 let hash = location.hash;
 hash = hash.replace("#", "?");
 const urlParams = new URLSearchParams(hash);
@@ -17,31 +16,45 @@ loginButton.addEventListener('click', () => {
 });
 
 currentTrackBtn.addEventListener('click', () => {
-    api.currrentPlayer()
+  api.currrentPlayer()
     .then(currTrack => {
       let str = currTrack.name + " by ";
-      currTrack.artists.forEach(artist=>{
+      currTrack.artists.forEach(artist => {
         str += artist.name;
       });
       const trackEl = document.querySelector("#currentTrack");
       trackEl.innerHTML = str;
     })
-    .catch(error=>console.log(error));
+    .catch(error => console.log(error));
 });
 
 getPlaylistsBtn.addEventListener('click', () => {
   api.getPlaylists()
     .then(playlists => {
       playlists.items.forEach(playlist => {
-        const playlistBtn = document.createElement("li");
-        playlistBtn.innerHTML = playlist.name;
-        playlistUl.append(playlistBtn);
+        const playlistBtnLabel = document.createElement("p");
+        playlistBtnLabel.classList.add("playlist");
+        playlistBtnLabel.innerText = playlist.name;
+        playlistBtnLabel.id = playlist.id;
+        playListCheckList.appendChild(playlistBtnLabel);
       })
     })
 });
 
-// api.addPlaylistByID(everything)
-// .then(() => api.addPlaylistByID(rap))
-// .then(() => api.currrentPlayer())
-// .then(() => api.currentTrackInPlaylists())
-// .catch(error => console.log(error));
+savePlaylistBtn.addEventListener('click', e => {
+  //e.preventDefault();
+  const playListCheckList = document.querySelector("#playListCheckList");
+  console.log(playListCheckList);
+  let nodes = playListCheckList.childNodes;
+  nodes.forEach(item=>{
+    if(item.nodeType === Node.ELEMENT_NODE)
+    if(item.classList.contains("clicked"))
+      console.log(item);
+  });
+});
+
+
+playListCheckList.addEventListener('click', e=>{
+  if(e.target.tagName === "P")
+    e.target.classList.toggle("clicked");
+})
