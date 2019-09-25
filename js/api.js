@@ -92,19 +92,21 @@ class API {
     })
   }
   currentTrackInPlaylists(){
+    let ids = [];
     console.log(this);
     let index = 0;
     this.playlists.forEach(playlist => {
       if(this.currentTrackInPlaylist(index))
-        console.log("Track is in playlist " + playlist.id);
-      else
-        console.log("Track is not in playlist " + playlist.id);
+        ids.push(playlist.id);
       index++;
     });
+    return ids;
   }
 
   currentTrackInPlaylist(index){
     let equal = false;
+      console.log(this.playlists);
+      console.log(index);
       this.playlists[index].tracks.forEach(playlist =>{
         playlist.forEach(subPlaylist => {
         if(subPlaylist.track.uri === this.currentTrackUri)

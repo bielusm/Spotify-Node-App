@@ -1,3 +1,7 @@
+.hide{
+  display:none;
+}
+
 .playlist:hover{
   border: solid 1px black;
 }
