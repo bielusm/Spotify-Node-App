@@ -6,7 +6,12 @@ class API {
     this.client_id = "4252feb807d04ced962e15f346258957";
   }
 
-  //sets currentTrackUri as the spotify uri of the current playing song
+  /**
+   * [sets currentTrackUri as the spotify uri of the current playing song]
+   * @return {Promise} [resolve on success reject on failure]
+   *                   promise value will contain json data on success
+   *                   and the api response on failure
+   */
   currrentPlayer() {
     return new Promise((resolve, reject) => {
       fetch("https://api.spotify.com/v1/me/player", {
@@ -16,10 +21,12 @@ class API {
           method: "GET"
         })
         .then(response => this.checkStatus(response))
-        .then(data =>
+        .then(data => {
           if (data === "")
             reject("Nothing is playing"); //TODO needs testing
           return data;
+        })
+        .then(data => data.json())
         .then((json) => {
           this.currentTrackUri = json.item.uri;
           resolve(json.item);
@@ -28,7 +35,11 @@ class API {
     });
   }
 
-  //returns a json object containing information about all users playlists
+  /**
+   * [Gets user playlists]
+   * @return {[promise]} [contains playlist object json on success]
+   *                     and api response on failure
+   */
   getPlaylists() {
     return new Promise((resolve, reject) => {
       fetch('https://api.spotify.com/v1/me/playlists', {
@@ -48,10 +59,13 @@ class API {
     });
   }
 
-  //checks the status code and rejects/resolves based on it
+  /**
+   * [checkStatus checks the status code and rejects/resolves based on it]
+   * @param  {API response object} response [the api response, needed for response.status]
+   * @return {Promise}          [reject on bad status, resolve otherwise, value always contains response]
+   */
   checkStatus(response) {
     return new Promise((resolve, reject) => {
-
       if (response.status === 401 || response.status === 429)
         reject(response);
       else
@@ -59,8 +73,11 @@ class API {
     });
   }
 
-  //takes a ID and name of a playlist and saves/returns all of its tracks
-  //the name variable is only used as a label
+  /**
+   * [takes a ID and name of a playlist and saves/returns all of its tracks]
+   * @param {int} ID   [the spotify id of the playlist]
+   * @param {the name of the playlist} name [description]
+   */
   addPlaylistByID(ID, name) {
     return new Promise((resolve, reject) => {
       if (this.playlists.length > 0 && this.playlists.find(element => element.id === ID)) {
