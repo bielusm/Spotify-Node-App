@@ -15,6 +15,7 @@ class API {
           },
           method: "GET"
         })
+        .then(response => this.checkStatus(response))
         .then(data => data.json())
         .then((json) => {
           if (json === "")
@@ -33,14 +34,22 @@ class API {
           },
           method: "GET"
         })
+        .then(response => this.checkStatus(response))
         .then(data => data.json())
-        .then((json) => {
+        .then(json => {
           resolve(json);
         })
         .catch(error => {
           reject(error);
         });
     });
+  }
+
+  checkStatus(response)
+  {
+    if(response.status === 401 || response.status === 429)
+      reject(response);
+     return response;
   }
 
   addPlaylistByID(ID, name) {
@@ -56,6 +65,7 @@ class API {
             },
             method: "GET"
           })
+        .then(response => this.checkStatus(response))
           .then(data => data.json())
           .then((json) => {
             tracks.push(json.items);
@@ -93,6 +103,7 @@ class API {
           },
           method: "GET"
         })
+        .then(response => this.checkStatus(response))
         .then(data => data.json())
         .then((json) => {
 

@@ -4,7 +4,7 @@
 
 .playlist{
   border: solid 1px transparent;
-  margin: 0px;
+  margin: 2px;
 }
 
 .playlist:hover{
