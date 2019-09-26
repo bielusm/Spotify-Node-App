@@ -2,6 +2,11 @@
   display:none;
 }
 
+.playlist{
+  border: solid 1px transparent;
+  margin: 0px;
+}
+
 .playlist:hover{
   border: solid 1px black;
 }
