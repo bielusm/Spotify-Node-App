@@ -1,4 +1,3 @@
-//check fetch request for token type
 class API {
   constructor(bearerToken) {
     this.bearerToken = bearerToken;
@@ -7,6 +6,7 @@ class API {
     this.client_id = "4252feb807d04ced962e15f346258957";
   }
 
+  //sets currentTrackUri as the spotify uri of the current playing song
   currrentPlayer() {
     return new Promise((resolve, reject) => {
       fetch("https://api.spotify.com/v1/me/player", {
@@ -16,16 +16,19 @@ class API {
           method: "GET"
         })
         .then(response => this.checkStatus(response))
-        .then(data => data.json())
+        .then(data =>
+          if (data === "")
+            reject("Nothing is playing"); //TODO needs testing
+          return data;
         .then((json) => {
-          if (json === "")
-            reject("Nothing is playing");
           this.currentTrackUri = json.item.uri;
           resolve(json.item);
         })
         .catch((error) => reject(error));
     });
   }
+
+  //returns a json object containing information about all users playlists
   getPlaylists() {
     return new Promise((resolve, reject) => {
       fetch('https://api.spotify.com/v1/me/playlists', {
@@ -45,13 +48,19 @@ class API {
     });
   }
 
-  checkStatus(response)
-  {
-    if(response.status === 401 || response.status === 429)
-      reject(response);
-     return response;
+  //checks the status code and rejects/resolves based on it
+  checkStatus(response) {
+    return new Promise((resolve, reject) => {
+
+      if (response.status === 401 || response.status === 429)
+        reject(response);
+      else
+        resolve(response);
+    });
   }
 
+  //takes a ID and name of a playlist and saves/returns all of its tracks
+  //the name variable is only used as a label
   addPlaylistByID(ID, name) {
     return new Promise((resolve, reject) => {
       if (this.playlists.length > 0 && this.playlists.find(element => element.id === ID)) {
@@ -65,7 +74,7 @@ class API {
             },
             method: "GET"
           })
-        .then(response => this.checkStatus(response))
+          .then(response => this.checkStatus(response))
           .then(data => data.json())
           .then((json) => {
             tracks.push(json.items);
@@ -95,6 +104,7 @@ class API {
     });
   }
 
+  //this function takes a URL from getNextTracks(ID, tracks) and fetches it, this is used to deal with the fact that spotify only returns 100 tracks at a time
   getNextTracks(ID, next, tracks) {
     return new Promise((resolve, reject) => {
       fetch(next, {
@@ -120,6 +130,7 @@ class API {
         .catch((error) => reject(error));
     })
   }
+
   currentTrackInPlaylists() {
     let ids = [];
     let index = 0;
@@ -152,4 +163,4 @@ class API {
   }
 }
 
-  export default API;
+export default API;

@@ -14,10 +14,12 @@ const urlParams = new URLSearchParams(hash);
 
 const api = new API(urlParams.get('access_token'));
 
+//Redirects user to spotify auth link
 loginButton.addEventListener('click', () => {
   window.location.href = 'https://accounts.spotify.com/authorize?client_id=4252feb807d04ced962e15f346258957&response_type=token&redirect_uri=http://localhost:3000/index.html&scope=user-read-playback-state%20playlist-read-private';
 });
 
+//Adds playlist to API, fetches current track
 updateBtn.addEventListener('click', () => {
   const trackEl = document.querySelector("#currentTrack");
   trackEl.classList.remove("hide");
@@ -46,12 +48,15 @@ updateBtn.addEventListener('click', () => {
             html = "Not in playlist";
           inPlaylists.innerHTML = html;
         })
-        .catch(error => console.log(error));
+        .then(success())
+        .catch(msg => error(msg));
 
     })
-    .catch(error => console.log(error));
+    .then(success())
+    .catch(msg => error(msg));
 });
 
+//gets a list of all users playlists and prints them on the DOM
 getPlaylistsBtn.addEventListener('click', () => {
   playlistsDiv.classList.toggle("hide");
   if (playlistsDiv.childElementCount === 0) {
@@ -65,6 +70,8 @@ getPlaylistsBtn.addEventListener('click', () => {
           playlistsDiv.appendChild(playlistBtnLabel);
         })
       })
+      .then(success())
+      .catch(msg => error(msg));
   }
 });
 
@@ -84,4 +91,27 @@ playlistsDiv.addEventListener('click', e => {
     }
     api.removeFromPlaylist(e.target.id);
   }
-})
+});
+
+//clears the error msg on success
+const success = (() => {
+  const errMsg = document.querySelector("#errMsg");
+  errMsg.innerText = "";
+});
+
+//handles error msgs given from rejected promises
+const error = (response => {
+  const errMsg = document.querySelector("#errMsg");
+  switch (response.status) {
+    case 401:
+      errMsg.innerText = "Error: you need to login/relogin to spotify"
+      break;
+    case 429:
+      errMsg.innerText = "Error: too many requests to spotify api, please wait a little and try again"
+      break;
+    default:
+      console.log("Error", response);
+      errMsg.innerText = "Error: check console for details";
+      break;
+  }
+});
