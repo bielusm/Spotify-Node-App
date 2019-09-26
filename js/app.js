@@ -20,16 +20,29 @@ loginButton.addEventListener('click', () => {
 });
 
 //Adds playlist to API, fetches current track
+
+let updateTimer = null;
 updateBtn.addEventListener('click', () => {
   const trackEl = document.querySelector("#currentTrack");
   trackEl.classList.remove("hide");
-  api.currrentPlayer()
-    .then(currTrack => {
-      let str = currTrack.name + " by ";
+  api.currentPlayer()
+    .then(json => {
+      console.log(json);
+      if(json.is_playing)
+      {
+        console.log();
+        console.log(json.progress_ms);
+        console.log(json.item.duration_ms);
+        console.log(json.progress_ms/json.item.duration_ms);
+        updateTimer = setTimeout(()=>{updateBtn.click()},json.item.duration_ms-json.progress_ms);
+      }
+      let currTrack = json.item;
+      let trackContext = currTrack.name + " by ";
       currTrack.artists.forEach(artist => {
-        str += " " + artist.name;
+        trackContext += " " + artist.name + ",";
       });
-      trackEl.innerHTML = str;
+      trackContext = trackContext.slice(0, trackContext.length - 1)
+      trackEl.innerHTML = trackContext;
       let promises = [];
       playlists.forEach(playlist => {
         promises.push(api.addPlaylistByID(playlist.id, playlist.name));

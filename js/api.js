@@ -12,7 +12,7 @@ class API {
    *                   promise value will contain json data on success
    *                   and the api response on failure
    */
-  currrentPlayer() {
+  currentPlayer() {
     return new Promise((resolve, reject) => {
       fetch("https://api.spotify.com/v1/me/player", {
           headers: {
@@ -29,7 +29,7 @@ class API {
         .then(data => data.json())
         .then((json) => {
           this.currentTrackUri = json.item.uri;
-          resolve(json.item);
+          resolve(json);
         })
         .catch((error) => reject(error));
     });
@@ -75,8 +75,8 @@ class API {
 
   /**
    * [takes a ID and name of a playlist and saves/returns all of its tracks]
-   * @param {int} ID   [the spotify id of the playlist]
-   * @param {the name of the playlist} name [description]
+   * @param {int} ID   [the spotify id of the playlist used to query the playlist]
+   * @param {the name of the playlist} name [used to label the playlist]
    */
   addPlaylistByID(ID, name) {
     return new Promise((resolve, reject) => {
