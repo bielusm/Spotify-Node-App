@@ -14,7 +14,7 @@ class API {
    */
   currentPlayer() {
     return new Promise((resolve, reject) => {
-      fetch("https://api.spotify.com/v1/me/player", {
+      fetch("https://api.spotify.com/v1/me/player/currently-playing", {
           headers: {
             'Authorization': "Bearer " + this.bearerToken
           },
@@ -23,7 +23,7 @@ class API {
         .then(response => {
           if(response.status === 204)
           {
-            reject("Error: no track playing");
+            reject("No track playing");
           }
           return response;
         })
@@ -66,9 +66,13 @@ class API {
    */
   checkStatus(response) {
     return new Promise((resolve, reject) => {
+
       switch(response.status)
       {
         case 401:
+          //TODO should put this in app.js
+          const loginButton = document.querySelector("#login");
+          loginButton.classList.remove("hide");
           reject("Error: you need to login/relogin to spotify");
         break;
         case 429:
