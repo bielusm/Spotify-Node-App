@@ -20,18 +20,20 @@ class API {
           },
           method: "GET"
         })
-        .then(response => this.checkStatus(response))
-        .then(data => {
-          if (data === "")
-            reject("Nothing is playing"); //TODO needs testing
-          return data;
+        .then(response => {
+          if(response.status === 204)
+          {
+            reject("Error: no track playing");
+          }
+          return response;
         })
+        .then(response => this.checkStatus(response))
         .then(data => data.json())
         .then((json) => {
           this.currentTrackUri = json.item.uri;
           resolve(json);
         })
-        .catch((error) => reject(error));
+        .catch((error) => reject(new Error(error)));
     });
   }
 
@@ -53,9 +55,7 @@ class API {
         .then(json => {
           resolve(json);
         })
-        .catch(error => {
-          reject(error);
-        });
+        .catch(error => reject(new Error(error)));
     });
   }
 
@@ -66,12 +66,21 @@ class API {
    */
   checkStatus(response) {
     return new Promise((resolve, reject) => {
-      if (response.status === 401 || response.status === 429)
-        reject(response);
-      else
-        resolve(response);
-    });
-  }
+      switch(response.status)
+      {
+        case 401:
+          reject("Error: you need to login/relogin to spotify");
+        break;
+        case 429:
+          reject("Error: too many requests to spotify api, please wait a little and try again");
+        break;
+
+        default:
+          resolve(response);
+          break;
+        }
+      });
+    }
 
   /**
    * [takes a ID and name of a playlist and saves/returns all of its tracks]
@@ -106,7 +115,7 @@ class API {
                   });
                   resolve(response);
                 })
-                .catch(error => reject(error));
+                .catch(error => reject(new Error(error)));
             } else {
               this.playlists.push({
                 id: ID,
@@ -116,7 +125,7 @@ class API {
               resolve("fetch finished");
             }
           })
-          .catch((error) => reject(error));
+          .catch((error) => reject(new Error(error)));
       }
     });
   }
@@ -140,11 +149,11 @@ class API {
           if (next != null)
             this.getNextTracks(ID, next, tracks)
             .then(response => resolve(response))
-            .catch(error => reject(error));
+            .catch(error => reject(new Error(error)));
           else
             return resolve("fetch finished");
         })
-        .catch((error) => reject(error));
+        .catch((error) => reject(new Error(error)));
     })
   }
 

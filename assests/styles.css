@@ -2,6 +2,10 @@
   display:none;
 }
 
+.found{
+  color: green;
+}
+
 .playlist{
   border: solid 1px transparent;
   margin: 2px;
