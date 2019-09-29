@@ -25,7 +25,7 @@ class API {
   async fetchToJson(url, op) {
     const response = await fetch(url, op)
     if (response.status != 200)
-      reject(response);
+      throw new Error(response.status);
     const json = await response.json();
     return json;
   }
@@ -48,10 +48,10 @@ class API {
           this.currentTrackUri = json.item.uri;
           resolve(json);
         })
-        .catch((response) => {
-          if (response.status = 204)
+        .catch((error) => {
+          if (error.message === 204)
             reject("No track playing");
-          reject(new Error(response.status));
+          reject(error);
         });
     });
   }
@@ -75,33 +75,6 @@ class API {
         .catch(error => reject(new Error(error)));
     });
   }
-
-  /**
-   * [checkStatus checks the status code and rejects/resolves based on it]
-   * @param  {API response object} response [the API response, needed to check the response status]
-   * @return {Promise}          [Reject on bad status, resolve otherwise, value always contains response]
-   */
-  checkStatus(response) {
-    return new Promise((resolve, reject) => {
-
-      switch (response.status) {
-        case 401:
-          //TODO should put this in app.js
-          const loginButton = document.querySelector("#login");
-          loginButton.classList.remove("hide");
-          reject("Error: you need to login/relogin to spotify");
-          break;
-        case 429:
-          reject("Error: too many requests to spotify api, please wait a little and try again");
-          break;
-
-        default:
-          resolve(response);
-          break;
-      }
-    });
-  }
-
   /**
    * @function addPlaylistByID
    * @description Takes a ID and name of a playlist and saves/returns all of its tracks as JSON object
@@ -224,6 +197,14 @@ class API {
     return equal;
   }
 
+  /**
+   * @function removeFromPlaylist
+   * @description Description
+   *
+   * @param {type} id Description
+   *
+   * @return {type} Description
+   */
   removeFromPlaylist(id) {
     for (let index = 0; index < this.playlists.length; index++) {
       if (this.playlists[index].id === id) {

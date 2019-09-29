@@ -188,9 +188,32 @@ const addTrackToPlaylist = (() => {
   console.log("adding");
 });
 
+
+const showLoginBtn = (() =>
+{
+  const loginButton = document.querySelector("#login");
+  loginButton.classList.remove("hide");
+});
+
 //handles error msgs given from rejected promises
-const error = (msg => {
-  console.log(msg);
-  const errMsg = document.querySelector("#errMsg");
-  errMsg.innerText = msg;
+const error = (error => {
+  const errLoc = document.querySelector("#errMsg");
+  //debugger;
+  let msg = error.message;
+  if (!isNaN(msg)) {
+    const status = parseInt(msg);
+    switch (status) {
+      case 401:
+        msg = "Please login, sessions are only valid for one hour";
+        showLoginBtn();
+      case 429:
+          msg = "Error: too many requests to spotify api, please wait a little and try again";
+        break;
+      default: {
+        msg = status;
+      }
+    }
+  }
+
+  errLoc.innerText = msg;
 });
