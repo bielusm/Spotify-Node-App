@@ -24,7 +24,10 @@ const api = new API(urlParams.get('access_token'));
 
 //Redirects user to spotify auth link
 loginButton.addEventListener('click', () => {
-  window.location.href = 'https://accounts.spotify.com/authorize?client_id=4252feb807d04ced962e15f346258957&response_type=token&redirect_uri=http://localhost:3000/index.html&scope=user-read-playback-state%20playlist-read-private';
+  const scope = "playlist-modify-public%20user-read-playback-state%20playlist-read-private%20playlist-modify-private";
+  const url = `https://accounts.spotify.com/authorize?client_id=4252feb807d04ced962e15f346258957&response_type=token&redirect_uri=http://localhost:3000/index.html&scope=${scope}&show_dialog=false`;
+  console.log(url);
+  window.location.href = url;
 });
 
 updateBtn.addEventListener('click', () => {
@@ -63,8 +66,6 @@ const markInPlaylist = () => {
     const btn = child.firstElementChild;
     btn.className = "add";
     btn.innerText = "Add";
-
-    //    btn.classList.add("hide");
   });
   inPlaylists.forEach(inPl => {
     const pl = trackingPlaylists.querySelector("." + inPl.name.replace(/ /g, "-"));
@@ -161,7 +162,7 @@ playlistsDiv.addEventListener('click', e => {
       if (playlists[index].id === e.target.id)
         playlists.splice(index, 1);
     }
-    api.removeFromPlaylist(e.target.id);
+    api.removeFromPlaylists(e.target.id);
   }
 });
 
@@ -173,24 +174,31 @@ const success = (() => {
 
 trackedPlaylists.addEventListener('click', e => {
   if (e.target.tagName === "BUTTON") {
+    const playlist_id = e.target.parentElement.id;
+    let track_uri = currentTrackUri;
+
     if (e.target.className == "remove") {
-      removeTrackFromPlaylist();
+      removeTrackFromPlaylist(playlist_id, track_uri);
     } else {
-      addTrackToPlaylist();
+      console.log(e.target);
+      addTrackToPlaylist(playlist_id, track_uri);
     }
   }
 });
 
-const removeTrackFromPlaylist = (() => {
-  console.log("removing");
+
+const addTrackToPlaylist = ((playlist_id,track_uri) => {
+  api.addTrackToPlaylist(playlist_id,track_uri)
+  .then(() => console.log("Successfully added"))
+  .catch(err => error(err));
 });
-const addTrackToPlaylist = (() => {
-  console.log("adding");
+const removeTrackFromPlaylist = (id => {
+  console.log(id);
 });
 
 
-const showLoginBtn = (() =>
-{
+
+const showLoginBtn = (() => {
   const loginButton = document.querySelector("#login");
   loginButton.classList.remove("hide");
 });
@@ -198,7 +206,6 @@ const showLoginBtn = (() =>
 //handles error msgs given from rejected promises
 const error = (error => {
   const errLoc = document.querySelector("#errMsg");
-  //debugger;
   let msg = error.message;
   if (!isNaN(msg)) {
     const status = parseInt(msg);
@@ -206,8 +213,9 @@ const error = (error => {
       case 401:
         msg = "Please login, sessions are only valid for one hour";
         showLoginBtn();
+        break;
       case 429:
-          msg = "Error: too many requests to spotify api, please wait a little and try again";
+        msg = "Error: too many requests to spotify api, please wait a little and try again";
         break;
       default: {
         msg = status;

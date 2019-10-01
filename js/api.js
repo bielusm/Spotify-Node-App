@@ -14,8 +14,6 @@ class API {
   /**
    * @function fetchToJson
    * @description Takes the parameters for a fetch request and converts the response to json
-   * @access private | public
-   *
    * @param {string} url URL for the fetch request
    * @param {JSON} op  Options for the fetch request
    *
@@ -24,7 +22,8 @@ class API {
    */
   async fetchToJson(url, op) {
     const response = await fetch(url, op)
-    if (response.status != 200)
+    const status = response.status;
+    if (status != 200 && status != 201)
       throw new Error(response.status);
     const json = await response.json();
     return json;
@@ -37,7 +36,6 @@ class API {
    */
   currentPlayer() {
     return new Promise((resolve, reject) => {
-      const url = "https://api.spotify.com/v1/me/player/currently-playing";
       this.fetchToJson("https://api.spotify.com/v1/me/player/currently-playing", {
           headers: {
             'Authorization': "Bearer " + this.bearerToken
@@ -49,8 +47,8 @@ class API {
           resolve(json);
         })
         .catch((error) => {
-          if (error.message === 204)
-            reject("No track playing");
+          if (error.message == 204)
+            reject(new Error("No track playing"));
           reject(error);
         });
     });
@@ -198,20 +196,39 @@ class API {
   }
 
   /**
-   * @function removeFromPlaylist
+   * @function removeFromPlaylists
    * @description Description
    *
    * @param {type} id Description
    *
    * @return {type} Description
    */
-  removeFromPlaylist(id) {
+  removeFromPlaylists(id) {
     for (let index = 0; index < this.playlists.length; index++) {
       if (this.playlists[index].id === id) {
         this.playlists.splice(index, 1);
         break;
       }
     }
+  }
+
+  addTrackToPlaylist(playlist_id, track_uri) {
+    return new Promise((resolve, reject) => {
+      const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_uri}`;
+      const op = {
+        headers: {
+          'Authorization': "Bearer " + this.bearerToken
+        },
+        method: "POST"
+      };
+      this.fetchToJson(url, op)
+        .then(json => {
+          resolve("success");
+        })
+        .catch(error => {
+          reject(new Error(error));
+        });
+    });
   }
 }
 
