@@ -216,6 +216,7 @@ class API {
    * @return {Promise} An empty promise
    */
   async removeTrackFromPlaylist(playlist_id, track_uri) {
+    console.log(track_uri);
     const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`
     const op = {
       headers: {
@@ -223,13 +224,10 @@ class API {
         'Content-Type': "application/json"
       },
       method: "DELETE",
-      body: {
-        "tracks:": [{
-          "uri": track_uri
-        }]
-      }
+      body: JSON.stringify({ "tracks": [{ "uri": track_uri }] })
     };
-    return this.fetchToJson(url, op);
+    return await this.fetchToJson(url, op);
+
   }
 
 }

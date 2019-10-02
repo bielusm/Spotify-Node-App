@@ -147,6 +147,7 @@ getPlaylistsBtn.addEventListener('click', async () => {
 
 //When the user clicks on a playlist it will become selected/unselected
 playlistsDiv.addEventListener('click', e => {
+  try{
   if (e.target.tagName === "P")
     e.target.classList.toggle("clicked");
   if (e.target.classList.contains("clicked"))
@@ -161,6 +162,7 @@ playlistsDiv.addEventListener('click', e => {
     }
     api.removeFromPlaylists(e.target.id);
   }
+} catch(error){error(error)}
 });
 
 //clears the error msg on success
@@ -171,18 +173,18 @@ const success = (() => {
 
 trackedPlaylists.addEventListener('click', async e => {
   if (e.target.tagName === "BUTTON") {
-    try {
       const playlist_id = e.target.parentElement.id;
       let track_uri = currentTrackUri;
       let promise = null;
+      try {
       if (e.target.className == "remove") {
-        api.removeTrackFromPlaylist(playlist_id, track_uri);
+        await api.removeTrackFromPlaylist(playlist_id, track_uri);
       } else {
-        api.addTrackToPlaylist(playlist_id, track_uri);
+        await api.addTrackToPlaylist(playlist_id, track_uri);
       }
 
-    } catch (error) {
-      error(error)
+    } catch (err) {
+      error(err)
     }
   }
 });
