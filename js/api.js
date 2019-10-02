@@ -23,144 +23,125 @@ class API {
   async fetchToJson(url, op) {
     const response = await fetch(url, op)
     const status = response.status;
-    if (status != 200 && status != 201)
+    if (status != 200 && status != 201) {
       throw new Error(response.status);
+    }
     const json = await response.json();
     return json;
   }
   /**
    * [sets currentTrackUri as the spotify URI of the current playing song]
+   * 
+   * @sync
    * @return {Promise} [resolve on success reject on failure]
    *                   promise value will contain JSON data on success
    *                   and the API Response on failure
    */
-  currentPlayer() {
-    return new Promise((resolve, reject) => {
-      this.fetchToJson("https://api.spotify.com/v1/me/player/currently-playing", {
-          headers: {
-            'Authorization': "Bearer " + this.bearerToken
-          },
-          method: "GET"
-        })
-        .then((json) => {
-          this.currentTrackUri = json.item.uri;
-          resolve(json);
-        })
-        .catch((error) => {
-          if (error.message == 204)
-            reject(new Error("No track playing"));
-          reject(error);
-        });
-    });
+  async currentPlayer() {
+    try {
+      const json = await this.fetchToJson("https://api.spotify.com/v1/me/player/currently-playing", {
+        headers: {
+          'Authorization': "Bearer " + this.bearerToken
+        },
+        method: "GET"
+      });
+      this.currentTrackUri = json.item.uri;
+      return json;
+    } catch (error) {
+      if (error.message == 204)
+        throw new Error("No track playing");
+      throw error;
+    };
   }
 
   /**
    * [Gets information about user playlists and returns them  as a JSON object]
+   * 
+   * @sync
    * @return {[promise]} [Contains playlist object JSON on success]
    *                     and API response on failure
    */
-  getPlaylists() {
-    return new Promise((resolve, reject) => {
-      this.fetchToJson('https://api.spotify.com/v1/me/playlists', {
-          headers: {
-            'Authorization': "Bearer " + this.bearerToken
-          },
-          method: "GET"
-        })
-        .then(json => {
-          resolve(json);
-        })
-        .catch(error => reject(new Error(error)));
+  async getPlaylists() {
+    const json = await this.fetchToJson('https://api.spotify.com/v1/me/playlists', {
+      headers: {
+        'Authorization': "Bearer " + this.bearerToken
+      },
+      method: "GET"
     });
+    return json;
   }
   /**
-   * @function addPlaylistByID
-   * @description Takes a ID and name of a playlist and saves/returns all of its tracks as JSON object
+   * Takes a ID and name of a playlist and saves/returns all of its tracks as JSON object
    *
+   * @async
    * @param {int} ID   [the spotify ID of the playlist used to query the playlist]
    * @param {string} name [used to label the playlist]
    *
    * @return {Promise} Resolves with JSON on success, rejects with Error Object on failure
    */
-  addPlaylistByID(ID, name) {
-    return new Promise((resolve, reject) => {
-      if (this.playlists.length > 0 && this.playlists.find(element => element.id === ID)) {
-        resolve("already added");
+  async addPlaylistByID(ID, name) {
+    if (this.playlists.length > 0 && this.playlists.find(element => element.id === ID)) {
+      return "already added";
+    } else {
+      let tracks = [];
+      let param = "?fields=next,items(track(name,artists,external_urls,id,uri,album(name)))"
+      let json = await this.fetchToJson(`https://api.spotify.com/v1/playlists/${ID}/tracks${param}`, {
+        headers: {
+          'Authorization': "Bearer " + this.bearerToken
+        },
+        method: "GET"
+      });
+      tracks.push(json.items);
+      const next = json['next'];
+      if (next != null) {
+        const response = await this.getNextTracks(ID, next, tracks)
+        this.playlists.push({
+          id: ID,
+          tracks: tracks,
+          name: name
+        });
       } else {
-        let tracks = [];
-        let param = "?fields=next,items(track(name,artists,external_urls,id,uri,album(name)))"
-        this.fetchToJson(`https://api.spotify.com/v1/playlists/${ID}/tracks${param}`, {
-            headers: {
-              'Authorization': "Bearer " + this.bearerToken
-            },
-            method: "GET"
-          })
-          .then((json) => {
-            tracks.push(json.items);
-            const next = json['next'];
-            if (next != null) {
-              this.getNextTracks(ID, next, tracks)
-                .then(response => {
-                  this.playlists.push({
-                    id: ID,
-                    tracks: tracks,
-                    name: name
-                  });
-                  resolve(response);
-                })
-                .catch(error => reject(new Error(error)));
-            } else {
-              this.playlists.push({
-                id: ID,
-                tracks: tracks,
-                name: name
-              });
-              resolve("fetch finished");
-            }
-          })
-          .catch((error) => reject(new Error(error)));
+        this.playlists.push({
+          id: ID,
+          tracks: tracks,
+          name: name
+        });
+        return "success"
       }
-    });
+    }
   }
 
 
   /**
-   * @function getNextTracks
-   * @description Takes a URL from getNextTracks(ID, tracks) and fetches it,
-   *              this is used to deal with the fact that Spotify only returns 100 tracks at a time
+   * Takes a URL from getNextTracks(ID, tracks) and fetches it,
+   * this is used to deal with the fact that Spotify only returns 100 tracks at a time
+   *
+   * @async
    * @param {number} ID   ID of the Spotify playlist
    * @param {type} next   URL of the next playlist chunk to fetch
    * @param {type} tracks Array containing all tracks so far
    *
    * @return {type} Description
    */
-  getNextTracks(ID, next, tracks) {
-    return new Promise((resolve, reject) => {
-      this.fetchToJson(next, {
-          headers: {
-            'Authorization': "Bearer " + this.bearerToken
-          },
-          method: "GET"
-        })
-        .then((json) => {
-          tracks.push(json.items);
-          const next = json['next'];
-          if (next != null)
-            this.getNextTracks(ID, next, tracks)
-            .then(response => resolve(response))
-            .catch(error => reject(new Error(error)));
-          else
-            return resolve("fetch finished");
-        })
-        .catch((error) => reject(new Error(error)));
-    })
+  async getNextTracks(ID, next, tracks) {
+    const json = await this.fetchToJson(next, {
+      headers: {
+        'Authorization': "Bearer " + this.bearerToken
+      },
+      method: "GET"
+    });
+    tracks.push(json.items);
+    next = json['next'];
+    if (next != null)
+      return this.getNextTracks(ID, next, tracks)
+    else
+      return;
   }
 
 
   /**
-   * @function currentTrackInPlaylists
-   * @description Calls the currentTrackInPlaylist(index)
-   *              function with an index to each playlist, see that function below for more info
+   * Calls the currentTrackInPlaylist(index)
+   * function with an index to each playlist, see that function below for more info
    *
    * @return {Array} An array of playlist IDs that contain the currents song
    */
@@ -177,11 +158,9 @@ class API {
 
 
   /**
-   * @function currentTrackInPlaylist
-   * @description Checks if a playlist at the given index contains the current playing song
+   * Checks if a playlist at the given index contains the current playing song
    *
    * @param {Number} index The index of the Spotify playlist
-   *
    * @return {Boolean} True if the track does contain the playlist, false otherwise
    */
   currentTrackInPlaylist(index) {
@@ -196,12 +175,9 @@ class API {
   }
 
   /**
-   * @function removeFromPlaylists
-   * @description Description
-   *
-   * @param {type} id Description
-   *
-   * @return {type} Description
+   * Removes the playlist with the given playlist URI from the playlist array
+   * 
+   * @param {Number} id  The Spotify URI for the playlist
    */
   removeFromPlaylists(id) {
     for (let index = 0; index < this.playlists.length; index++) {
@@ -212,24 +188,51 @@ class API {
     }
   }
 
-  addTrackToPlaylist(playlist_id, track_uri) {
-    return new Promise((resolve, reject) => {
-      const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_uri}`;
-      const op = {
-        headers: {
-          'Authorization': "Bearer " + this.bearerToken
-        },
-        method: "POST"
-      };
-      this.fetchToJson(url, op)
-        .then(json => {
-          resolve("success");
-        })
-        .catch(error => {
-          reject(new Error(error));
-        });
-    });
+  /**
+   *  Adds a given track to a given playlist
+   * @async
+   * @param {String} playlist_id Spotify URI identifier for the playlist
+   * @param {String} track_uri Spotify URI for the track to be added
+   * 
+   * @return {Promise} Success of success and the error on failure 
+   */
+  async addTrackToPlaylist(playlist_id, track_uri) {
+    const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_uri}`;
+    const op = {
+      headers: {
+        'Authorization': "Bearer " + this.bearerToken
+      },
+      method: "POST"
+    };
+    return this.fetchToJson(url, op);
   }
+
+  /**
+   * Takes a playlist URI and removes all instances of a given track URI from it
+   * @async
+   * @param {String} playlist_id 
+   * @param {String} track_uri 
+   * 
+   * @return {Promise} An empty promise
+   */
+  async removeTrackFromPlaylist(playlist_id, track_uri) {
+    const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`
+    const op = {
+      headers: {
+        'Authorization': "Bearer " + this.bearerToken,
+        'Content-Type': "application/json"
+      },
+      method: "DELETE",
+      body: {
+        "tracks:": [{
+          "uri": track_uri
+        }]
+      }
+    };
+    return this.fetchToJson(url, op);
+  }
+
 }
+
 
 export default API;

@@ -36,25 +36,21 @@ updateBtn.addEventListener('click', () => {
 
 
 let updateTimer = null;
-const update = () => {
-  api.currentPlayer()
-    .then(json => {
-      let currTrack = json.item;
-      let newTrackUri = currTrack.uri;
-      return new Promise((resolve, reject) => {
-          if (currentTrackUri !== newTrackUri) {
-            setTrackContext(currTrack);
-          }
-          markInPlaylist();
-          if (updateTimer === null)
-            updateTimer = setInterval(update, 2000);
-          resolve();
-        })
-        .then(success())
-        .catch(msg => error(msg));
-    })
-    .then(success())
-    .catch(msg => error(msg));
+const update = async () => {
+  try {
+    const json = await api.currentPlayer();
+    let currTrack = json.item;
+    let newTrackUri = currTrack.uri;
+    if (currentTrackUri !== newTrackUri) {
+      setTrackContext(currTrack);
+    }
+    markInPlaylist();
+    if (updateTimer === null)
+      updateTimer = setInterval(update, 2000);
+    success();
+  } catch (msg) {
+    error(msg);
+  }
 };
 
 const markInPlaylist = () => {
@@ -88,23 +84,24 @@ const setTrackContext = (currTrack) => {
   trackEl.innerHTML = trackContext;
 };
 //gets a list of all users playlists and prints them on the DOM
-getPlaylistsBtn.addEventListener('click', () => {
+getPlaylistsBtn.addEventListener('click', async () => {
   playlistsDiv.classList.toggle("hide");
   if (playlistsDiv.childElementCount === 0) {
-    api.getPlaylists()
-      .then(playlists => {
-        playlists.items.forEach(playlist => {
-          const playlistBtnLabel = document.createElement("p");
-          playlistBtnLabel.classList.add("playlist");
-          playlistBtnLabel.innerText = playlist.name;
-          playlistBtnLabel.id = playlist.id;
-          playlistBtnLabel.classList.add(playlist.name.replace(/ /g, "-"));
-          const addRmBtn = document.createElement("button");
-          playlistsDiv.appendChild(playlistBtnLabel);
-        })
+    try {
+      const playlists = await api.getPlaylists()
+      playlists.items.forEach(playlist => {
+        const playlistBtnLabel = document.createElement("p");
+        playlistBtnLabel.classList.add("playlist");
+        playlistBtnLabel.innerText = playlist.name;
+        playlistBtnLabel.id = playlist.id;
+        playlistBtnLabel.classList.add(playlist.name.replace(/ /g, "-"));
+        const addRmBtn = document.createElement("button");
+        playlistsDiv.appendChild(playlistBtnLabel);
       })
-      .then(success())
-      .catch(msg => error(msg));
+      success();
+    } catch (msg) {
+      error(msg)
+    };
   }
 
   if (playlistsDiv.classList.contains("hide")) {
@@ -172,28 +169,22 @@ const success = (() => {
   errMsg.innerText = "";
 });
 
-trackedPlaylists.addEventListener('click', e => {
+trackedPlaylists.addEventListener('click', async e => {
   if (e.target.tagName === "BUTTON") {
-    const playlist_id = e.target.parentElement.id;
-    let track_uri = currentTrackUri;
+    try {
+      const playlist_id = e.target.parentElement.id;
+      let track_uri = currentTrackUri;
+      let promise = null;
+      if (e.target.className == "remove") {
+        api.removeTrackFromPlaylist(playlist_id, track_uri);
+      } else {
+        api.addTrackToPlaylist(playlist_id, track_uri);
+      }
 
-    if (e.target.className == "remove") {
-      removeTrackFromPlaylist(playlist_id, track_uri);
-    } else {
-      console.log(e.target);
-      addTrackToPlaylist(playlist_id, track_uri);
+    } catch (error) {
+      error(error)
     }
   }
-});
-
-
-const addTrackToPlaylist = ((playlist_id,track_uri) => {
-  api.addTrackToPlaylist(playlist_id,track_uri)
-  .then(() => console.log("Successfully added"))
-  .catch(err => error(err));
-});
-const removeTrackFromPlaylist = (id => {
-  console.log(id);
 });
 
 
@@ -205,6 +196,7 @@ const showLoginBtn = (() => {
 
 //handles error msgs given from rejected promises
 const error = (error => {
+  console.log(error);
   const errLoc = document.querySelector("#errMsg");
   let msg = error.message;
   if (!isNaN(msg)) {
