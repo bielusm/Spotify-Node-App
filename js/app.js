@@ -5,7 +5,7 @@ const playlistsDiv = document.querySelector("#playlistSelection");
 const loginButton = document.querySelector("#login");
 const updateBtn = document.querySelector("#updateBtn");
 const savePlaylistBtn = document.querySelector("#savePlaylistBtn");
-const trackingPlaylists = document.querySelector("#trackedPlaylists");
+const trackedPlaylists = document.querySelector("#trackedPlaylists");
 
 let currentTrackUri = null;
 let playlists = [];
@@ -14,7 +14,7 @@ let updatingPlaylists = false;
 let hash = location.hash;
 
 if (location.hash !== "") {
-  loginButton.classList.add("hide");
+  loginButton.classList.add("d-none");
 
 }
 hash = hash.replace("#", "?");
@@ -55,26 +55,29 @@ const update = async () => {
 
 const markInPlaylist = () => {
   const inPlaylists = api.currentTrackInPlaylists();
-  const children = trackingPlaylists.childNodes;
+  const ul = document.querySelector("#trackedPlaylists ul")
+  const children = Array.from(ul.children);
   children.forEach(child => {
     if (child.tagName === "LI")
+    {
       child.classList.remove("found");
     const btn = child.firstElementChild;
-    btn.className = "add";
+    btn.className = "add btn btn-success";
     btn.innerText = "Add";
+    }
   });
   inPlaylists.forEach(inPl => {
-    const pl = trackingPlaylists.querySelector("." + inPl.name.replace(/ /g, "-"));
+    const pl = trackedPlaylists.querySelector("." + inPl.name.replace(/ /g, "-"));
     pl.classList.add("found");
     const btn = pl.firstElementChild;
-    btn.className = "remove";
+    btn.className = "remove btn btn-danger";
     btn.innerText = "Remove";
   });
 }
 
 const setTrackContext = (currTrack) => {
   const trackEl = document.querySelector("#currentTrack");
-  trackEl.classList.remove("hide");
+  trackEl.classList.remove("d-none");
   currentTrackUri = currTrack.uri;
   let trackContext = currTrack.name + " by ";
   currTrack.artists.forEach(artist => {
@@ -85,18 +88,16 @@ const setTrackContext = (currTrack) => {
 };
 //gets a list of all users playlists and prints them on the DOM
 getPlaylistsBtn.addEventListener('click', async () => {
-  playlistsDiv.classList.toggle("hide");
+  playlistsDiv.classList.toggle("d-none");
   if (playlistsDiv.childElementCount === 0) {
     try {
       const playlists = await api.getPlaylists()
-      playlists.items.forEach(playlist => {
-        const playlistBtnLabel = document.createElement("p");
-        playlistBtnLabel.classList.add("playlist");
-        playlistBtnLabel.innerText = playlist.name;
-        playlistBtnLabel.id = playlist.id;
-        playlistBtnLabel.classList.add(playlist.name.replace(/ /g, "-"));
-        const addRmBtn = document.createElement("button");
-        playlistsDiv.appendChild(playlistBtnLabel);
+      playlists.items.forEach(playlist => {      
+        const plName = playlist.name.replace(/ /g, "-");
+
+        const html = 
+        `<a id="${playlist.id}"class="playlist ${plName} list-group-item list-group-item-action">${playlist.name}</a>`
+        playlistsDiv.innerHTML += html;
       })
       success();
     } catch (msg) {
@@ -104,39 +105,29 @@ getPlaylistsBtn.addEventListener('click', async () => {
     };
   }
 
-  if (playlistsDiv.classList.contains("hide")) {
+  if (playlistsDiv.classList.contains("d-none")) {
     let promises = [];
-    const trackingPlaylists = document.querySelector("#trackedPlaylists");
-    const title = document.createElement("h2");
-    while (trackingPlaylists.firstChild) {
-      trackingPlaylists.firstChild.remove();
-    }
-
-    title.innerText = "Tracking Playlists\n";
-    trackingPlaylists.append(title);
-
+  
     if (playlists.length > 0) {
       getPlaylistsBtn.disabled = true;
       updateBtn.disabled = true;
+      const trackedHeader = document.querySelector("#trackedPlaylists h2");
+      trackedHeader.classList.remove("d-none");
+      const playlistUl = document.querySelector("#trackedPlaylists .list-group");
+      playlistUl.innerHTML = "";
       playlists.forEach(playlist => {
         promises.push(api.addPlaylistByID(playlist.id, playlist.name));
-        let pl = document.createElement("li");
-        pl.id = playlist.id;
-        pl.classList.add(playlist.name.replace(/ /g, "-"));
-        pl.innerText = playlist.name;
-        let btn = document.createElement("button")
-        btn.classList.add("hide");
-        btn.innerText = "Remove";
-        pl.append(btn);
-
-        trackingPlaylists.append(pl)
+        const plName = playlist.name.replace(/ /g, "-");
+        const html = `
+        <li id="${playlist.id}" class="d-flex justify-content-between list-group-item ${plName}">${playlist.name}<button class="btn btn-danger"></button></li>`
+        playlistUl.innerHTML += html;
       });
-
-      inPlaylists.innerHTML = "Loading..."
+      const loading = document.querySelector(".loadingStatus");
+      loading.classList.remove("d-none");
       updatingPlaylists = true;
       Promise.all(promises)
         .then(() => {
-          inPlaylists.innerHTML = ""
+          loading.classList.add("d-none");
           getPlaylistsBtn.disabled = false;
           updateBtn.disabled = false;
         })
@@ -148,9 +139,9 @@ getPlaylistsBtn.addEventListener('click', async () => {
 //When the user clicks on a playlist it will become selected/unselected
 playlistsDiv.addEventListener('click', e => {
   try{
-  if (e.target.tagName === "P")
-    e.target.classList.toggle("clicked");
-  if (e.target.classList.contains("clicked"))
+  if (e.target.tagName === "A")
+    e.target.classList.toggle("active");
+  if (e.target.classList.contains("active"))
     playlists.push({
       name: e.target.innerHTML,
       id: e.target.id
@@ -177,7 +168,7 @@ trackedPlaylists.addEventListener('click', async e => {
       let track_uri = currentTrackUri;
       let promise = null;
       try {
-      if (e.target.className == "remove") {
+      if (e.target.classList.contains("remove")) {
         await api.removeTrackFromPlaylist(playlist_id, track_uri);
       } else {
         await api.addTrackToPlaylist(playlist_id, track_uri);
@@ -193,7 +184,7 @@ trackedPlaylists.addEventListener('click', async e => {
 
 const showLoginBtn = (() => {
   const loginButton = document.querySelector("#login");
-  loginButton.classList.remove("hide");
+  loginButton.classList.remove("d-none");
 });
 
 //handles error msgs given from rejected promises

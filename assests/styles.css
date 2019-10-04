@@ -1,21 +1,3 @@
-.hide{
-  display:none;
-}
-
-.found{
-  color: green;
-}
-
-.playlist{
-  border: solid 1px transparent;
-  margin: 2px;
-}
-
-.playlist:hover{
-  border: solid 1px black;
-}
-
-.clicked
-{
-    border: solid 1px green;
+.container{
+  background-color: gray;
 }
