@@ -30,12 +30,17 @@ loginButton.addEventListener('click', () => {
   window.location.href = url;
 });
 
+//Listens to the update button and calls the update method when its clicked
 updateBtn.addEventListener('click', () => {
   update();
 });
 
 
 let updateTimer = null;
+/**
+ * Updates the UI
+ * @async
+ */
 const update = async () => {
   try {
     const json = await api.currentPlayer();
@@ -53,13 +58,16 @@ const update = async () => {
   }
 };
 
+/**
+ * Asks the API if current track is in playlist, if it is display that to the user,
+ * adds remove and add buttons to each playlist in the tracked playlist list
+ */
 const markInPlaylist = () => {
   const inPlaylists = api.currentTrackInPlaylists();
   const ul = document.querySelector("#trackedPlaylists ul")
   const children = Array.from(ul.children);
   children.forEach(child => {
-    if (child.tagName === "LI")
-    {
+    if (child.tagName === "LI") {
       child.classList.remove("found");
     const btn = child.firstElementChild;
     btn.className = "add btn btn-success";
@@ -75,6 +83,11 @@ const markInPlaylist = () => {
   });
 }
 
+/**
+ * Takes a spotify track object and displays the name and artist to the user
+ * 
+ * @param {Spotify Track Object} currTrack 
+ */
 const setTrackContext = (currTrack) => {
   const trackEl = document.querySelector("#currentTrack");
   trackEl.classList.remove("d-none");
@@ -83,10 +96,16 @@ const setTrackContext = (currTrack) => {
   currTrack.artists.forEach(artist => {
     trackContext += " " + artist.name + ",";
   });
+  //remove trailing comma
   trackContext = trackContext.slice(0, trackContext.length - 1)
   trackEl.innerHTML = trackContext;
 };
-//gets a list of all users playlists and prints them on the DOM
+
+/**
+ * gets a list of all users playlists and prints them on the DOM
+ * 
+ * @async
+ */
 getPlaylistsBtn.addEventListener('click', async () => {
   playlistsDiv.classList.toggle("d-none");
   if (playlistsDiv.childElementCount === 0) {
@@ -138,7 +157,7 @@ getPlaylistsBtn.addEventListener('click', async () => {
 
 //When the user clicks on a playlist it will become selected/unselected
 playlistsDiv.addEventListener('click', e => {
-  try{
+  try {
   if (e.target.tagName === "A")
     e.target.classList.toggle("active");
   if (e.target.classList.contains("active"))
@@ -151,7 +170,7 @@ playlistsDiv.addEventListener('click', e => {
       if (playlists[index].id === e.target.id)
         playlists.splice(index, 1);
     }
-    api.removeFromPlaylists(e.target.id);
+      api.removePlaylist(e.target.id);
   }
 } catch(error){error(error)}
 });
@@ -161,6 +180,8 @@ const success = (() => {
   const errMsg = document.querySelector("#errMsg");
   errMsg.innerText = "";
 });
+
+
 
 trackedPlaylists.addEventListener('click', async e => {
   if (e.target.tagName === "BUTTON") {

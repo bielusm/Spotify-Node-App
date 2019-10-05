@@ -193,20 +193,6 @@ class API {
   }
 
   /**
-   * Removes the playlist with the given playlist URI from the playlist array
-   * 
-   * @param {Number} id  The Spotify URI for the playlist
-   */
-  removeFromPlaylists(id) {
-    for (let index = 0; index < this.playlists.length; index++) {
-      if (this.playlists[index].id === id) {
-        this.playlists.splice(index, 1);
-        break;
-      }
-    }
-  }
-
-  /**
    *  Adds a given track to a given playlist
    * @async
    * @param {String} playlist_id Spotify URI identifier for the playlist
@@ -249,6 +235,28 @@ class API {
     };
     return await this.fetchToJson(url, op);
 
+  }
+
+  /**
+   * Removes the playlist with the given playlist URI from the playlist array
+   * 
+   * @param {Number} id  The Spotify URI for the playlist
+   */
+  removePlaylist(id) {
+    const index = this.indexOfPlaylist(id)
+    this.playlists.splice(index, 1);
+  }
+
+  /**
+   * Finds the index of a playlist with the given playlist ID
+   * 
+   * @param {Number} id 
+   */
+  indexOfPlaylist(id) {
+    for (let index = 0; index < this.playlists.length; index++) {
+      if (this.playlists[index].id === id)
+        return index;
+    }
   }
 
 }
