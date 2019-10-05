@@ -187,8 +187,8 @@ class API {
     //TODO forEach is slow for this because it doesen't break the loop
     this.playlists[index].tracks.forEach(item => {
       if (item.track.uri === this.currentTrack.uri)
-          equal = true;
-      });
+        equal = true;
+    });
     return equal;
   }
 
@@ -208,6 +208,7 @@ class API {
       },
       method: "POST"
     };
+    this.addTrackToCache(playlist_id, track);
     return this.fetchToJson(url, op);
   }
 
@@ -233,6 +234,7 @@ class API {
         }]
       })
     };
+    this.removeTrackFromCache(playlist_id, track);
     return await this.fetchToJson(url, op);
 
   }
@@ -259,7 +261,31 @@ class API {
     }
   }
 
-}
+  /**
+   * Takes a track object and adds it to the array of all playlists
+   * 
+   * @param {string} playlist_id the Spotify URI of the playlist
+   * @param {Spotify track object} track 
+   */
+  addTrackToCache(playlist_id, track) {
+    const index = this.indexOfPlaylist(playlist_id);
+    this.playlists[index].tracks.push({
+      track
+    });
+  }
 
+  /**
+   * Takes a track object and removes it from the array of all playlists
+   * 
+   * @param {string} playlist_id 
+   * @param {Spotify track object} track 
+   */
+  removeTrackFromCache(playlist_id, track) {
+    const index = this.indexOfPlaylist(playlist_id);
+    this.playlists[index].tracks = this.playlists[index].tracks.filter(item => {
+      return item.track.uri !== track.uri
+    })
+  }
+}
 
 export default API;

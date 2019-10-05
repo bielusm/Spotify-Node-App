@@ -69,9 +69,9 @@ const markInPlaylist = () => {
   children.forEach(child => {
     if (child.tagName === "LI") {
       child.classList.remove("found");
-    const btn = child.firstElementChild;
-    btn.className = "add btn btn-success";
-    btn.innerText = "Add";
+      const btn = child.firstElementChild;
+      btn.className = "add btn btn-success";
+      btn.innerText = "Add";
     }
   });
   inPlaylists.forEach(inPl => {
@@ -111,11 +111,11 @@ getPlaylistsBtn.addEventListener('click', async () => {
   if (playlistsDiv.childElementCount === 0) {
     try {
       const playlists = await api.getPlaylists()
-      playlists.items.forEach(playlist => {      
+      playlists.items.forEach(playlist => {
         const plName = playlist.name.replace(/ /g, "-");
 
-        const html = 
-        `<a id="${playlist.id}"class="playlist ${plName} list-group-item list-group-item-action">${playlist.name}</a>`
+        const html =
+          `<a id="${playlist.id}"class="playlist ${plName} list-group-item list-group-item-action">${playlist.name}</a>`
         playlistsDiv.innerHTML += html;
       })
       success();
@@ -126,7 +126,7 @@ getPlaylistsBtn.addEventListener('click', async () => {
 
   if (playlistsDiv.classList.contains("d-none")) {
     let promises = [];
-  
+
     if (playlists.length > 0) {
       getPlaylistsBtn.disabled = true;
       updateBtn.disabled = true;
@@ -158,20 +158,20 @@ getPlaylistsBtn.addEventListener('click', async () => {
 //When the user clicks on a playlist it will become selected/unselected
 playlistsDiv.addEventListener('click', e => {
   try {
-  if (e.target.tagName === "A")
-    e.target.classList.toggle("active");
-  if (e.target.classList.contains("active"))
-    playlists.push({
-      name: e.target.innerHTML,
-      id: e.target.id
-    });
-  else { //remove from api playlist and app playlist
-    for (let index = 0; index < playlists.length; index++) {
-      if (playlists[index].id === e.target.id)
-        playlists.splice(index, 1);
-    }
+    if (e.target.tagName === "A")
+      e.target.classList.toggle("active");
+    if (e.target.classList.contains("active"))
+      playlists.push({
+        name: e.target.innerHTML,
+        id: e.target.id
+      });
+    else { //remove from api playlist and app playlist
+      for (let index = 0; index < playlists.length; index++) {
+        if (playlists[index].id === e.target.id)
+          playlists.splice(index, 1);
+      }
       api.removePlaylist(e.target.id);
-  }
+    }
   } catch (err) {
     error(err)
   }
@@ -187,16 +187,20 @@ const success = (() => {
 
 trackedPlaylists.addEventListener('click', async e => {
   if (e.target.tagName === "BUTTON") {
-      const playlist_id = e.target.parentElement.id;
-      let track_uri = currentTrackUri;
-      let promise = null;
-      try {
+    e.target.disabled = true;
+    const playlist_id = e.target.parentElement.id;
+    let track_uri = currentTrack.uri;
+    let promise = null;
+    try {
       if (e.target.classList.contains("remove")) {
-        await api.removeTrackFromPlaylist(playlist_id, track_uri);
+        await api.removeTrackFromPlaylist(playlist_id, currentTrack);
       } else {
-        await api.addTrackToPlaylist(playlist_id, track_uri);
+        await api.addTrackToPlaylist(playlist_id, currentTrack);
       }
-
+      update()
+        .finally(() => {
+          e.target.disabled = false;
+        })
     } catch (err) {
       error(err)
     }
