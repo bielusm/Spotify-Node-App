@@ -5,7 +5,16 @@
 class API {
   constructor(bearerToken) {
     this.bearerToken = bearerToken;
-    this.currentTrackUri = null;
+    this.currentTrack = {
+      name: null,
+      artists: null,
+      external_urls: null,
+      id: null,
+      uri: null,
+      album: {
+        name: null
+      }
+    };
     this.playlists = [];
     this.client_id = "4252feb807d04ced962e15f346258957";
   }
@@ -30,7 +39,7 @@ class API {
     return json;
   }
   /**
-   * [sets currentTrackUri as the spotify URI of the current playing song]
+   * [sets currentTrack as the current playing song]
    * 
    * @sync
    * @return {Promise} [resolve on success reject on failure]
@@ -45,7 +54,17 @@ class API {
         },
         method: "GET"
       });
-      this.currentTrackUri = json.item.uri;
+      const item = json.item;
+      this.currentTrack = {
+        name: item.name,
+        artists: item.artists,
+        external_urls: item.external_urls,
+        id: item.id,
+        uri: item.uri,
+        album: {
+          name: item.album.name
+        }
+      };
       return json;
     } catch (error) {
       if (error.message == 204)
@@ -91,7 +110,7 @@ class API {
         },
         method: "GET"
       });
-      tracks.push(json.items);
+      tracks.push(...json.items);
       const next = json['next'];
       if (next != null) {
         const response = await this.getNextTracks(ID, next, tracks)
@@ -130,7 +149,7 @@ class API {
       },
       method: "GET"
     });
-    tracks.push(json.items);
+    tracks.push(...json.items);
     next = json['next'];
     if (next != null)
       return this.getNextTracks(ID, next, tracks)
@@ -165,12 +184,11 @@ class API {
    */
   currentTrackInPlaylist(index) {
     let equal = false;
-    this.playlists[index].tracks.forEach(playlist => {
-      playlist.forEach(subPlaylist => {
-        if (subPlaylist.track.uri === this.currentTrackUri)
+    //TODO forEach is slow for this because it doesen't break the loop
+    this.playlists[index].tracks.forEach(item => {
+      if (item.track.uri === this.currentTrack.uri)
           equal = true;
       });
-    });
     return equal;
   }
 
@@ -196,8 +214,8 @@ class API {
    * 
    * @return {Promise} Success of success and the error on failure 
    */
-  async addTrackToPlaylist(playlist_id, track_uri) {
-    const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track_uri}`;
+  async addTrackToPlaylist(playlist_id, track) {
+    const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track.uri}`;
     const op = {
       headers: {
         'Authorization': "Bearer " + this.bearerToken
@@ -215,8 +233,7 @@ class API {
    * 
    * @return {Promise} An empty promise
    */
-  async removeTrackFromPlaylist(playlist_id, track_uri) {
-    console.log(track_uri);
+  async removeTrackFromPlaylist(playlist_id, track) {
     const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`
     const op = {
       headers: {
@@ -224,7 +241,11 @@ class API {
         'Content-Type': "application/json"
       },
       method: "DELETE",
-      body: JSON.stringify({ "tracks": [{ "uri": track_uri }] })
+      body: JSON.stringify({
+        "tracks": [{
+          "uri": track.uri
+        }]
+      })
     };
     return await this.fetchToJson(url, op);
 

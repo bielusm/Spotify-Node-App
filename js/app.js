@@ -7,7 +7,7 @@ const updateBtn = document.querySelector("#updateBtn");
 const savePlaylistBtn = document.querySelector("#savePlaylistBtn");
 const trackedPlaylists = document.querySelector("#trackedPlaylists");
 
-let currentTrackUri = null;
+let currentTrack = null;
 let playlists = [];
 let updatingPlaylists = false;
 
@@ -41,7 +41,7 @@ const update = async () => {
     const json = await api.currentPlayer();
     let currTrack = json.item;
     let newTrackUri = currTrack.uri;
-    if (currentTrackUri !== newTrackUri) {
+    if (currentTrack === null || currentTrack.uri !== newTrackUri) {
       setTrackContext(currTrack);
     }
     markInPlaylist();
@@ -78,7 +78,7 @@ const markInPlaylist = () => {
 const setTrackContext = (currTrack) => {
   const trackEl = document.querySelector("#currentTrack");
   trackEl.classList.remove("d-none");
-  currentTrackUri = currTrack.uri;
+  currentTrack = currTrack;
   let trackContext = currTrack.name + " by ";
   currTrack.artists.forEach(artist => {
     trackContext += " " + artist.name + ",";
