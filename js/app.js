@@ -172,7 +172,9 @@ playlistsDiv.addEventListener('click', e => {
     }
       api.removePlaylist(e.target.id);
   }
-} catch(error){error(error)}
+  } catch (err) {
+    error(err)
+  }
 });
 
 //clears the error msg on success

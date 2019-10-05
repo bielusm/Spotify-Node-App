@@ -113,7 +113,7 @@ class API {
       tracks.push(...json.items);
       const next = json['next'];
       if (next != null) {
-        const response = await this.getNextTracks(ID, next, tracks)
+        const response = await this.getNextTracks(ID, next, tracks);
         this.playlists.push({
           id: ID,
           tracks: tracks,
