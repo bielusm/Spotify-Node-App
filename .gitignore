@@ -1,3 +1,4 @@
 writeMe.json
 json/
 .tern-project
+/node_modules
