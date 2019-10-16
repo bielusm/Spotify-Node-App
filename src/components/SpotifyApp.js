@@ -107,15 +107,17 @@ export default class SpotifyApp extends React.Component {
       });
       Promise.all(promises)
         .then(() => {
+          getPlaylistsBtn.disabled = false;
+          updateBtn.disabled = false;
+        })
+        .catch(msg => error(msg))
+        .finally(() => {
           this.setState({
             loading: false,
             updateDisabled: false,
             getPlaylistsDisabled: false
           });
-          getPlaylistsBtn.disabled = false;
-          updateBtn.disabled = false;
-        })
-        .catch(msg => error(msg));
+        });
     }
   };
 
