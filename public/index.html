@@ -1,38 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="assets/styles.css" />
+    <title></title>
+  </head>
 
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <link rel="stylesheet" type="text/css" href="assets/styles.css">
-  <title></title>
-</head>
-
-<body>
-  <div class="container justify-content-center">
-    <h1>Spotify Manager</h1>
-    <button id=login class="btn btn-secondary">Log in</button>
-    <button id=updateBtn class="btn btn-secondary">Update</button>
-    <button id=getPlaylistsBtn class="btn btn-secondary">Pick playlists</button>
-    <h2 id=errMsg class="my-4">
-      <h2></h2>
-      <h2 id=currentTrack></h2>
-      <div class="loadingStatus d-none">
-        <div class="spinner-border" role="status">
-          <span idclass="sr-only"></span>
-        </div>
-        <h2 class="mx-2 d-inline">Loading...</h2>
-      </div>
-      <ul id="playlistSelection" class="d-none list-group"></ul>
-      <div id="trackedPlaylists">
-        <h2 class="d-none">Tracked Playlists</h2>
-        <ul class="list-group">
-
-        </ul>
-      </div>
-  </div>
-  <script src="assets/bundle.js" type="module"></script>
-</body>
-
+  <body>
+    <div id="app"></div>
+    <script src="assets/bundle.js" type="module"></script>
+  </body>
 </html>
