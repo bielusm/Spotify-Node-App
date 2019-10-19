@@ -78,7 +78,12 @@ export default class SpotifyApp extends React.Component {
 
     if (this.state.playlists === undefined) {
       try {
-        const playlists = await this.api.getPlaylists();
+        const playlistsFetch = await this.api.getPlaylists();
+
+        const playlists = playlistsFetch.items.map(item => ({
+          ...item,
+          selected: false
+        }));
         this.setState({
           playlists
         });
@@ -125,29 +130,45 @@ export default class SpotifyApp extends React.Component {
   selectPlaylist = e => {
     try {
       e.persist();
-      if (e.target.tagName === "A") e.target.classList.toggle("active");
-      if (e.target.classList.contains("active"))
+      const { tagName, id } = e.target;
+      if (tagName === "A") {
+        const pl = this.state.playlists.find(pl => pl.id === id);
+        const selected = !pl.selected;
+        if (selected === true)
+          this.setState(prevState => ({
+            trackedPlaylists: [
+              ...prevState.trackedPlaylists,
+              {
+                name: e.target.text,
+                id: e.target.id,
+                found: false
+              }
+            ]
+          }));
+        else {
+          this.setState(prevState => {
+            return {
+              trackedPlaylists: prevState.trackedPlaylists.filter(
+                item => item.id !== e.target.id
+              )
+            };
+          });
+          this.api.removePlaylist(e.target.id);
+        }
+
         this.setState(prevState => ({
-          trackedPlaylists: prevState.trackedPlaylists.concat({
-            name: e.target.text,
-            id: e.target.id,
-            found: false
+          playlists: prevState.playlists.map(pl => {
+            if (pl.id === id) return { ...pl, selected: !pl.selected };
+            else return pl;
           })
         }));
-      else {
-        this.setState(prevState => {
-          return {
-            trackedPlaylists: prevState.trackedPlaylists.filter(
-              item => item.id !== e.target.id
-            )
-          };
-        });
-        this.api.removePlaylist(e.target.id);
       }
     } catch (err) {
       this.error(err);
     }
   };
+
+  addToTrackedPlaylists() {}
 
   /**
    * Asks the API if current track is in playlist, if it is display that to the user,

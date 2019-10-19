@@ -8,16 +8,14 @@ const PlaylistSelection = props => (
         className="list-group"
         onClick={props.selectPlaylist}
       >
-        {props.playlists.items.map(playlist => {
+        {props.playlists.map(playlist => {
           const plName = playlist.name.replace(/ /g, "-");
+          const selected = playlist.selected;
+          let className =
+            { plName } + "playlist list-group-item list-group-item-action";
+          if (selected) className += " active";
           return (
-            <a
-              key={playlist.name}
-              id={playlist.id}
-              className={
-                "playlist " + plName + " list-group-item list-group-item-action"
-              }
-            >
+            <a key={playlist.name} id={playlist.id} className={className}>
               {playlist.name}
             </a>
           );
