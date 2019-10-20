@@ -7,7 +7,8 @@ export default class LoginBtn extends React.Component {
     let redirect_uri = window.location.href;
     redirect_uri = redirect_uri.slice(0, redirect_uri.length - 1);
     const url = `https://accounts.spotify.com/authorize?client_id=4252feb807d04ced962e15f346258957&response_type=token&redirect_uri=${redirect_uri}&scope=${scope}&show_dialog=false`;
-    window.location.href = url;
+    console.log(url);
+    // window.location.href = url;
   };
 
   render() {
