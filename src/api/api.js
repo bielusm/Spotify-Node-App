@@ -19,7 +19,6 @@ class API {
     this.client_id = "4252feb807d04ced962e15f346258957";
   }
 
-
   /**
    * @function fetchToJson
    * @description Takes the parameters for a fetch request and converts the response to json
@@ -30,7 +29,7 @@ class API {
    *                   Rejects response object otherwise
    */
   async fetchToJson(url, op) {
-    const response = await fetch(url, op)
+    const response = await fetch(url, op);
     const status = response.status;
     if (status != 200 && status != 201) {
       throw new Error(response.status);
@@ -40,7 +39,7 @@ class API {
   }
   /**
    * [sets currentTrack as the current playing song]
-   * 
+   *
    * @sync
    * @return {Promise} [resolve on success reject on failure]
    *                   promise value will contain JSON data on success
@@ -48,12 +47,15 @@ class API {
    */
   async currentPlayer() {
     try {
-      const json = await this.fetchToJson("https://api.spotify.com/v1/me/player/currently-playing", {
-        headers: {
-          'Authorization': "Bearer " + this.bearerToken
-        },
-        method: "GET"
-      });
+      const json = await this.fetchToJson(
+        "https://api.spotify.com/v1/me/player/currently-playing",
+        {
+          headers: {
+            Authorization: "Bearer " + this.bearerToken
+          },
+          method: "GET"
+        }
+      );
       const item = json.item;
       this.currentTrack = {
         name: item.name,
@@ -67,26 +69,28 @@ class API {
       };
       return json;
     } catch (error) {
-      if (error.message == 204)
-        throw new Error("No track playing");
+      if (error.message == 204) throw new Error("No track playing");
       throw error;
-    };
+    }
   }
 
   /**
    * [Gets information about user playlists and returns them  as a JSON object]
-   * 
+   *
    * @sync
    * @return {[promise]} [Contains playlist object JSON on success]
    *                     and API response on failure
    */
   async getPlaylists() {
-    const json = await this.fetchToJson('https://api.spotify.com/v1/me/playlists', {
-      headers: {
-        'Authorization': "Bearer " + this.bearerToken
-      },
-      method: "GET"
-    });
+    const json = await this.fetchToJson(
+      "https://api.spotify.com/v1/me/playlists",
+      {
+        headers: {
+          Authorization: "Bearer " + this.bearerToken
+        },
+        method: "GET"
+      }
+    );
     return json;
   }
   /**
@@ -99,19 +103,26 @@ class API {
    * @return {Promise} Resolves with JSON on success, rejects with Error Object on failure
    */
   async addPlaylistByID(ID, name) {
-    if (this.playlists.length > 0 && this.playlists.find(element => element.id === ID)) {
+    if (
+      this.playlists.length > 0 &&
+      this.playlists.find(element => element.id === ID)
+    ) {
       return "already added";
     } else {
       let tracks = [];
-      let param = "?fields=next,items(track(name,artists,external_urls,id,uri,album(name)))"
-      let json = await this.fetchToJson(`https://api.spotify.com/v1/playlists/${ID}/tracks${param}`, {
-        headers: {
-          'Authorization': "Bearer " + this.bearerToken
-        },
-        method: "GET"
-      });
+      let param =
+        "?fields=next,items(track(name,artists,external_urls,id,uri,album(name)))";
+      let json = await this.fetchToJson(
+        `https://api.spotify.com/v1/playlists/${ID}/tracks${param}`,
+        {
+          headers: {
+            Authorization: "Bearer " + this.bearerToken
+          },
+          method: "GET"
+        }
+      );
       tracks.push(...json.items);
-      const next = json['next'];
+      const next = json["next"];
       if (next != null) {
         const response = await this.getNextTracks(ID, next, tracks);
         this.playlists.push({
@@ -125,11 +136,10 @@ class API {
           tracks: tracks,
           name: name
         });
-        return "success"
+        return "success";
       }
     }
   }
-
 
   /**
    * Takes a URL from getNextTracks(ID, tracks) and fetches it,
@@ -145,18 +155,15 @@ class API {
   async getNextTracks(ID, next, tracks) {
     const json = await this.fetchToJson(next, {
       headers: {
-        'Authorization': "Bearer " + this.bearerToken
+        Authorization: "Bearer " + this.bearerToken
       },
       method: "GET"
     });
     tracks.push(...json.items);
-    next = json['next'];
-    if (next != null)
-      return this.getNextTracks(ID, next, tracks)
-    else
-      return;
+    next = json["next"];
+    if (next != null) return this.getNextTracks(ID, next, tracks);
+    else return;
   }
-
 
   /**
    * Calls the currentTrackInPlaylist(index)
@@ -168,13 +175,11 @@ class API {
     let ids = [];
     let index = 0;
     this.playlists.forEach(playlist => {
-      if (this.currentTrackInPlaylist(index))
-        ids.push(playlist);
+      if (this.currentTrackInPlaylist(index)) ids.push(playlist);
       index++;
     });
     return ids;
   }
-
 
   /**
    * Checks if a playlist at the given index contains the current playing song
@@ -186,8 +191,7 @@ class API {
     let equal = false;
     //TODO forEach is slow for this because it doesen't break the loop
     this.playlists[index].tracks.forEach(item => {
-      if (item.track.uri === this.currentTrack.uri)
-        equal = true;
+      if (item.track.uri === this.currentTrack.uri) equal = true;
     });
     return equal;
   }
@@ -197,14 +201,14 @@ class API {
    * @async
    * @param {String} playlist_id Spotify URI identifier for the playlist
    * @param {String} track_uri Spotify URI for the track to be added
-   * 
-   * @return {Promise} Success of success and the error on failure 
+   *
+   * @return {Promise} Success of success and the error on failure
    */
   async addTrackToPlaylist(playlist_id, track) {
     const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks?uris=${track.uri}`;
     const op = {
       headers: {
-        'Authorization': "Bearer " + this.bearerToken
+        Authorization: "Bearer " + this.bearerToken
       },
       method: "POST"
     };
@@ -215,57 +219,57 @@ class API {
   /**
    * Takes a playlist URI and removes all instances of a given track URI from it
    * @async
-   * @param {String} playlist_id 
-   * @param {String} track_uri 
-   * 
+   * @param {String} playlist_id
+   * @param {String} track_uri
+   *
    * @return {Promise} An empty promise
    */
   async removeTrackFromPlaylist(playlist_id, track) {
-    const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`
+    const url = `https://api.spotify.com/v1/playlists/${playlist_id}/tracks`;
     const op = {
       headers: {
-        'Authorization': "Bearer " + this.bearerToken,
-        'Content-Type': "application/json"
+        Authorization: "Bearer " + this.bearerToken,
+        "Content-Type": "application/json"
       },
       method: "DELETE",
       body: JSON.stringify({
-        "tracks": [{
-          "uri": track.uri
-        }]
+        tracks: [
+          {
+            uri: track.uri
+          }
+        ]
       })
     };
     this.removeTrackFromCache(playlist_id, track);
     return await this.fetchToJson(url, op);
-
   }
 
   /**
    * Removes the playlist with the given playlist URI from the playlist array
-   * 
+   *
    * @param {Number} id  The Spotify URI for the playlist
    */
   removePlaylist(id) {
-    const index = this.indexOfPlaylist(id)
+    const index = this.indexOfPlaylist(id);
     this.playlists.splice(index, 1);
   }
 
   /**
    * Finds the index of a playlist with the given playlist ID
-   * 
-   * @param {Number} id 
+   *
+   * @param {Number} id
    */
   indexOfPlaylist(id) {
     for (let index = 0; index < this.playlists.length; index++) {
-      if (this.playlists[index].id === id)
-        return index;
+      if (this.playlists[index].id === id) return index;
     }
   }
 
   /**
    * Takes a track object and adds it to the array of all playlists
-   * 
+   *
    * @param {string} playlist_id the Spotify URI of the playlist
-   * @param {Spotify track object} track 
+   * @param {Spotify track object} track
    */
   addTrackToCache(playlist_id, track) {
     const index = this.indexOfPlaylist(playlist_id);
@@ -276,30 +280,16 @@ class API {
 
   /**
    * Takes a track object and removes it from the array of all playlists
-   * 
-   * @param {string} playlist_id 
-   * @param {Spotify track object} track 
+   *
+   * @param {string} playlist_id
+   * @param {Spotify track object} track
    */
   removeTrackFromCache(playlist_id, track) {
     const index = this.indexOfPlaylist(playlist_id);
     this.playlists[index].tracks = this.playlists[index].tracks.filter(item => {
-      return item.track.uri !== track.uri
-    })
-  }
-
-  async pause(){
-    const url = https://api.spotify.com/v1/me/player/pause
-    const op = {
-      headers: {
-        'Authorization': "Bearer " + this.bearerToken,
-      },
-      method: "PUT"
-    };
-    this.removeTrackFromCache(playlist_id, track);
-    return await this.fetchToJson(url, op);
+      return item.track.uri !== track.uri;
+    });
   }
 }
-
-
 
 export default API;

@@ -9,8 +9,9 @@ import TrackContext from "./TrackContext";
 import Loading from "./Loading";
 import PlaylistSelection from "./PlaylistSelection";
 import TrackedPlaylists from "./TrackedPlaylists";
+import Player from "./Player";
 
-import API from "../api";
+import API from "../api/api";
 
 export default class SpotifyApp extends React.Component {
   state = {
@@ -270,6 +271,7 @@ export default class SpotifyApp extends React.Component {
           />
           <ErrorMsg msg={this.state.errMsg} />
           <TrackContext trackContext={this.state.trackContext} />
+          <Player />
           <Loading loading={this.state.loading} />
           <PlaylistSelection
             showPlaylists={this.state.showPlaylists}
