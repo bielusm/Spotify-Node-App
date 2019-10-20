@@ -3,3 +3,4 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 ReactDOM.render(<SpotifyApp />, document.getElementById("app"));
+console.log("App started");
