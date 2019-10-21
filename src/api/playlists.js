@@ -11,6 +11,7 @@ export default class Playlist {
    * [Gets information about user playlists and returns them  as a JSON object]
    *
    * @sync
+   * @param {string} bearerToken returned from the inital Spotify API call
    * @return {[promise]} [Contains playlist object JSON on success]
    *                     and API response on failure
    */
@@ -27,6 +28,7 @@ export default class Playlist {
    * Takes a ID and name of a playlist and saves/returns all of its tracks as JSON object
    *
    * @async
+   * @param {string} bearerToken returned from the inital Spotify API call
    * @param {int} ID   [the spotify ID of the playlist used to query the playlist]
    * @param {string} name [used to label the playlist]
    *
@@ -81,6 +83,7 @@ export default class Playlist {
    * this is used to deal with the fact that Spotify only returns 100 tracks at a time
    *
    * @async
+   * @param {string} bearerToken returned from the inital Spotify API call
    * @param {number} ID   ID of the Spotify playlist
    * @param {type} next   URL of the next playlist chunk to fetch
    * @param {type} tracks Array containing all tracks so far
@@ -104,8 +107,6 @@ export default class Playlist {
    * Calls the currentTrackInPlaylist(index, track)
    * function with an index to each playlist, see that function below for more info
    * @param {track object} The track to be checked
-   *
-   *
    * @return {Array} An array of playlist IDs that contain the currents song
    */
   trackInPlaylists(track) {
@@ -137,6 +138,7 @@ export default class Playlist {
   /**
    *  Adds a given track to a given playlist
    * @async
+   * @param {string} bearerToken returned from the inital Spotify API call
    * @param {String} playlist_id Spotify URI identifier for the playlist
    * @param {String} track_uri Spotify URI for the track to be added
    *
@@ -157,6 +159,7 @@ export default class Playlist {
   /**
    * Takes a playlist URI and removes all instances of a given track URI from it
    * @async
+   * @param {string} bearerToken returned from the inital Spotify API call
    * @param {String} playlist_id
    * @param {String} track_uri
    *

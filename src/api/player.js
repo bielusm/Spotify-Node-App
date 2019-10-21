@@ -4,6 +4,7 @@ import fetchToJson from "./util";
  * [sets currentTrack as the current playing song]
  *
  * @sync
+ * @param {string} bearerToken returned from the inital Spotify API call
  * @return {Promise} A track object, keeping the properties
  * {name, artists, external_uris, id, uri, album{name}}
  * for more info on the track object see
