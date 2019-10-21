@@ -2,7 +2,7 @@ import React from "react";
 
 import Header from "./Header";
 import LoginBtn from "./LoginBtn";
-import UpdateBtn from "./UpdateBtn.js";
+import UpdateBtn from "./UpdateBtn";
 import GetPlaylistsBtn from "./GetPlaylistsBtn";
 import ErrorMsg from "./ErrorMsg";
 import TrackContext from "./TrackContext";
@@ -11,7 +11,8 @@ import PlaylistSelection from "./PlaylistSelection";
 import TrackedPlaylists from "./TrackedPlaylists";
 import Player from "./Player";
 
-import API from "../api/api";
+import { currentPlayer } from "../api/player";
+import Playlists from "../api/playlists";
 
 export default class SpotifyApp extends React.Component {
   state = {
@@ -27,10 +28,11 @@ export default class SpotifyApp extends React.Component {
     trackedPlaylists: [],
     loading: false
   };
-  api = null;
+  bearerToken = null;
   currentTrack = null;
 
   updateTimer = null;
+  playlists = null;
 
   /**
    * Updates the UI
@@ -38,11 +40,12 @@ export default class SpotifyApp extends React.Component {
    */
   update = async () => {
     try {
-      const json = await this.api.currentPlayer();
-      let currTrack = json.item;
-      let newTrackUri = currTrack.uri;
-      if (this.currentTrack === null || this.currentTrack.uri !== newTrackUri) {
-        this.setTrackContext(currTrack);
+      const newTrack = await currentPlayer(this.bearerToken);
+      if (
+        this.currentTrack === null ||
+        this.currentTrack.uri !== newTrack.Uri
+      ) {
+        this.setTrackContext(newTrack);
       }
       this.markInPlaylist();
       if (this.updateTimer === null)
@@ -79,7 +82,9 @@ export default class SpotifyApp extends React.Component {
 
     if (this.state.playlists === undefined) {
       try {
-        const playlistsFetch = await this.api.getPlaylists();
+        const playlistsFetch = await this.playlists.getPlaylists(
+          this.bearerToken
+        );
 
         const playlists = playlistsFetch.items.map(item => ({
           ...item,
@@ -109,7 +114,13 @@ export default class SpotifyApp extends React.Component {
       }));
 
       this.state.trackedPlaylists.forEach(playlist => {
-        promises.push(this.api.addPlaylistByID(playlist.id, playlist.name));
+        promises.push(
+          this.playlists.addPlaylistByID(
+            this.bearerToken,
+            playlist.id,
+            playlist.name
+          )
+        );
       });
       Promise.all(promises)
         .then(() => {
@@ -154,7 +165,7 @@ export default class SpotifyApp extends React.Component {
               )
             };
           });
-          this.api.removePlaylist(e.target.id);
+          this.playlists.removePlaylist(e.target.id);
         }
 
         this.setState(prevState => ({
@@ -176,7 +187,7 @@ export default class SpotifyApp extends React.Component {
    * adds remove and add buttons to each playlist in the tracked playlist list
    */
   markInPlaylist = () => {
-    const inPlaylists = this.api.currentTrackInPlaylists();
+    const inPlaylists = this.playlists.trackInPlaylists(this.currentTrack);
     const trackedPlaylists = this.state.trackedPlaylists;
 
     trackedPlaylists.forEach(child => {
@@ -198,12 +209,17 @@ export default class SpotifyApp extends React.Component {
       let promise = null;
       try {
         if (e.target.classList.contains("remove")) {
-          await this.api.removeTrackFromPlaylist(
+          await this.playlists.removeTrackFromPlaylist(
+            this.bearerToken,
             playlist_id,
             this.currentTrack
           );
         } else {
-          await this.api.addTrackToPlaylist(playlist_id, this.currentTrack);
+          await this.playlists.addTrackToPlaylist(
+            this.bearerToken,
+            playlist_id,
+            this.currentTrack
+          );
         }
         this.update().finally(() => {
           e.target.disabled = false;
@@ -252,7 +268,8 @@ export default class SpotifyApp extends React.Component {
     hash = hash.replace("#", "?");
     const urlParams = new URLSearchParams(hash);
 
-    this.api = new API(urlParams.get("access_token"));
+    this.bearerToken = urlParams.get("access_token");
+    this.playlists = new Playlists();
   }
 
   render() {
