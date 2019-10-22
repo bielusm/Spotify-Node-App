@@ -11,7 +11,7 @@ import PlaylistSelection from "./PlaylistSelection";
 import TrackedPlaylists from "./TrackedPlaylists";
 import Player from "./Player";
 
-import { currentPlayer } from "../api/player";
+import { currentPlayer, likesSong } from "../api/player";
 import Playlists from "../api/playlists";
 
 export default class SpotifyApp extends React.Component {
@@ -33,14 +33,18 @@ export default class SpotifyApp extends React.Component {
 
   updateTimer = null;
   playlists = null;
-
+  is_playing = false;
+  likesSong = false;
   /**
    * Updates the UI
    * @async
    */
   update = async () => {
     try {
+      //need to better parall this
       const newTrack = await currentPlayer(this.bearerToken);
+      this.likesSong = await likesSong(this.bearerToken, newTrack.id);
+      this.is_playing = newTrack.is_playing;
       if (
         this.currentTrack === null ||
         this.currentTrack.uri !== newTrack.Uri
@@ -180,8 +184,6 @@ export default class SpotifyApp extends React.Component {
     }
   };
 
-  addToTrackedPlaylists() {}
-
   /**
    * Asks the API if current track is in playlist, if it is display that to the user,
    * adds remove and add buttons to each playlist in the tracked playlist list
@@ -288,7 +290,15 @@ export default class SpotifyApp extends React.Component {
           />
           <ErrorMsg msg={this.state.errMsg} />
           <TrackContext trackContext={this.state.trackContext} />
-          <Player />
+
+          {this.currentTrack !== null && (
+            <Player
+              bearerToken={this.bearerToken}
+              is_playing={this.is_playing}
+              likes_song={this.likesSong}
+              id={this.currentTrack.id}
+            />
+          )}
           <Loading loading={this.state.loading} />
           <PlaylistSelection
             showPlaylists={this.state.showPlaylists}
