@@ -18,9 +18,7 @@ export default class SpotifyApp extends React.Component {
   state = {
     loginVisible: true,
     trackContext: "",
-    getPlaylistsDisabled: false,
     showPlaylistsDiv: true,
-    updateDisabled: false,
     showTrackedPlaylists: false,
     showPlaylists: false,
     errMsg: undefined,
@@ -106,7 +104,13 @@ export default class SpotifyApp extends React.Component {
     }
 
     this.setState(() => ({ showPlaylists }));
+    this.addNewPlaylists();
+  };
 
+  /**
+   * Adds new tracked playlists to the playlist array in the API class
+   */
+  addNewPlaylists = () => {
     if (this.state.trackedPlaylists.length > 0) {
       let promises = [];
 
@@ -118,6 +122,7 @@ export default class SpotifyApp extends React.Component {
       }));
 
       this.state.trackedPlaylists.forEach(playlist => {
+        if (playlist.loading) {
         promises.push(
           this.playlists.addPlaylistByID(
             this.bearerToken,
@@ -125,19 +130,19 @@ export default class SpotifyApp extends React.Component {
             playlist.name
           )
         );
+        }
       });
       Promise.all(promises)
-        .then(() => {
-          getPlaylistsBtn.disabled = false;
-          updateBtn.disabled = false;
-        })
+        .then(() => {})
         .catch(msg => error(msg))
         .finally(() => {
-          this.setState({
+          this.setState(prevState => ({
             loading: false,
-            updateDisabled: false,
-            getPlaylistsDisabled: false
-          });
+            trackedPlaylists: prevState.trackedPlaylists.map(pl => {
+              pl.loading = false;
+              return pl;
+            })
+          }));
         });
     }
   };
@@ -157,7 +162,8 @@ export default class SpotifyApp extends React.Component {
               {
                 name: e.target.text,
                 id: e.target.id,
-                found: false
+                found: false,
+                loading: true
               }
             ]
           }));
@@ -280,10 +286,7 @@ export default class SpotifyApp extends React.Component {
         <div className="container justify-content-center">
           <Header />
           <LoginBtn loginVisible={this.state.loginVisible} />
-          <UpdateBtn
-            disabled={this.state.updateDisabled}
-            update={this.update}
-          />
+          <UpdateBtn update={this.update} />
           <GetPlaylistsBtn
             getPlaylists={this.getPlaylists}
             disabled={this.state.getPlaylistsDisabled}
@@ -307,6 +310,7 @@ export default class SpotifyApp extends React.Component {
           />
           <TrackedPlaylists
             trackedPlaylists={this.state.trackedPlaylists}
+            currentTrack={this.currentTrack}
             addOrRemove={this.addOrRemove}
           />
         </div>
