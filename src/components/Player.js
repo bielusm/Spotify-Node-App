@@ -10,20 +10,25 @@ import {
 
 export default class Player extends React.Component {
   togglePause = () => {
-    if (this.props.is_playing) pausePlayer(this.props.bearerToken);
-    else startPlayer(this.props.bearerToken);
+    if (this.props.is_playing)
+      pausePlayer(this.props.bearerToken).then(() => this.props.update());
+    else startPlayer(this.props.bearerToken).then(() => this.props.update());
   };
 
   nextTrack = () => {
-    nextTrack(this.props.bearerToken);
+    nextTrack(this.props.bearerToken).then(() => this.props.update());
   };
 
   prevTrack = () => {
-    prevTrack(this.props.bearerToken);
+    prevTrack(this.props.bearerToken).then(() => this.props.update());
   };
 
   toggleLike = () => {
-    modifyLibrary(this.props.bearerToken, this.props.id, this.props.likes_song);
+    modifyLibrary(
+      this.props.bearerToken,
+      this.props.id,
+      this.props.likes_song
+    ).then(() => this.props.update());
   };
   render() {
     return (

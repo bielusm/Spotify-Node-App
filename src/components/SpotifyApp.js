@@ -300,6 +300,7 @@ export default class SpotifyApp extends React.Component {
               is_playing={this.is_playing}
               likes_song={this.likesSong}
               id={this.currentTrack.id}
+              update={this.update}
             />
           )}
           <Loading loading={this.state.loading} />
