@@ -21,7 +21,11 @@ export const currentPlayer = async bearerToken => {
         method: "GET"
       }
     );
+
+    //This case happens when the user skips to no track
     const item = json.item;
+    if (item === null) throw new Error(204);
+
     const currentTrack = {
       name: item.name,
       artists: item.artists,
