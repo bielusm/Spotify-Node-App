@@ -123,13 +123,13 @@ export default class SpotifyApp extends React.Component {
 
       this.state.trackedPlaylists.forEach(playlist => {
         if (playlist.loading) {
-        promises.push(
-          this.playlists.addPlaylistByID(
-            this.bearerToken,
-            playlist.id,
-            playlist.name
-          )
-        );
+          promises.push(
+            this.playlists.addPlaylistByID(
+              this.bearerToken,
+              playlist.id,
+              playlist.name
+            )
+          );
         }
       });
       Promise.all(promises)

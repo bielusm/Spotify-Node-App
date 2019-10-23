@@ -17,21 +17,21 @@ const TrackedPlaylists = props => (
               );
             } else if (playlist.found) {
               button = (
-                  <button
-                    className="btn btn-danger remove"
-                    onClick={props.addOrRemove}
-                  >
-                    Remove
-                  </button>
+                <button
+                  className="btn btn-danger remove"
+                  onClick={props.addOrRemove}
+                >
+                  Remove
+                </button>
               );
             } else
               button = (
-                  <button
-                    className="btn btn-success add"
-                    onClick={props.addOrRemove}
-                  >
-                    Add
-                  </button>
+                <button
+                  className="btn btn-success add"
+                  onClick={props.addOrRemove}
+                >
+                  Add
+                </button>
               );
 
             return (
