@@ -1,0 +1,26 @@
+@import "../base/base";
+
+.playlistSelection_list {
+    margin: 1rem;
+    color: $light-grey;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.playlistSelection_item {
+    color: $dark-grey;
+    background-color: #6c757d;
+    border: 1px solid $light-grey;
+    padding: 1rem;
+}
+
+.playlistSelection_item:hover {
+    background-color: lighten(#6c757d, 10);
+    color: black;
+}
+
+.playlistSelection_item.active {
+    background-color: lighten(#6c757d, 20);
+    color: black;
+}

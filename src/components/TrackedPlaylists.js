@@ -4,8 +4,8 @@ const TrackedPlaylists = props => (
   <div>
     {props.trackedPlaylists.length > 0 && (
       <div id="trackedPlaylists">
-        <h2>Tracked Playlists</h2>
-        <ul className="list-group">
+        <h2 className="trackedPlaylists-header">Tracked Playlists</h2>
+        <div className="tracked trackedPlaylists-list">
           {props.trackedPlaylists.map(playlist => {
             const plName = playlist.name.replace(/ /g, "-");
             let button;
@@ -35,19 +35,19 @@ const TrackedPlaylists = props => (
               );
 
             return (
-              <li
+              <div
                 key={playlist.id}
                 id={playlist.id}
-                className={
-                  "d-flex justify-content-between list-group-item " + plName
-                }
+                className={"trackedPlaylists-list_item " + plName}
               >
-                {playlist.name}
+                <p className="trackedPlaylists-list_item_text">
+                  {playlist.name}
+                </p>
                 {button}
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
       </div>
     )}
   </div>

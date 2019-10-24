@@ -1,0 +1,31 @@
+@import '../base/base';
+
+
+.trackedPlaylists-header {
+    color: $dark-grey;
+}
+
+.trackedPlaylists-list {
+    margin: 1rem;
+    color: $light-grey;
+    padding: 20px;
+}
+
+.trackedPlaylists-list_item {
+    color: $dark-grey;
+    background-color: #6c757d;
+    border: 1px solid $light-grey;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.trackedPlaylists-list_item_text {
+    max-width: 80%;
+    display: inline;
+}
+
+.trackedPlaylists-list_item.button {
+    display: inline;
+}

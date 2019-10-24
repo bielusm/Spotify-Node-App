@@ -71,6 +71,7 @@ export default class SpotifyApp extends React.Component {
     });
     //remove trailing comma
     trackContext = trackContext.slice(0, trackContext.length - 1);
+    document.title = trackContext;
     this.setState(() => ({ trackContext }));
   };
 
@@ -151,8 +152,8 @@ export default class SpotifyApp extends React.Component {
   selectPlaylist = e => {
     try {
       e.persist();
-      const { tagName, id } = e.target;
-      if (tagName === "A") {
+      const { tagName, id, classList } = e.target;
+      if (classList.contains("playlistSelection_item")) {
         const pl = this.state.playlists.find(pl => pl.id === id);
         const selected = !pl.selected;
         if (selected === true)
@@ -160,7 +161,7 @@ export default class SpotifyApp extends React.Component {
             trackedPlaylists: [
               ...prevState.trackedPlaylists,
               {
-                name: e.target.text,
+                name: e.target.textContent,
                 id: e.target.id,
                 found: false,
                 loading: true
@@ -283,14 +284,16 @@ export default class SpotifyApp extends React.Component {
   render() {
     return (
       <div>
-        <div className="container justify-content-center">
+        <div className="container">
           <Header />
-          <LoginBtn loginVisible={this.state.loginVisible} />
-          <UpdateBtn update={this.update} />
-          <GetPlaylistsBtn
-            getPlaylists={this.getPlaylists}
-            disabled={this.state.getPlaylistsDisabled}
-          />
+          <div className="btn-container">
+            <LoginBtn loginVisible={this.state.loginVisible} />
+            <UpdateBtn update={this.update} />
+            <GetPlaylistsBtn
+              getPlaylists={this.getPlaylists}
+              disabled={this.state.getPlaylistsDisabled}
+            />
+          </div>
           <ErrorMsg msg={this.state.errMsg} />
           <TrackContext trackContext={this.state.trackContext} />
 

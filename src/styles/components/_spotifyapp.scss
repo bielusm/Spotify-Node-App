@@ -1,0 +1,10 @@
+@import "../base/base";
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding-bottom: 1rem;
+    background-color: $light-grey;
+    border-radius: 25px;
+    color: $dark-grey;
+}
