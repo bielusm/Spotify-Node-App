@@ -14,7 +14,7 @@ export default class LoginBtn extends React.Component {
     return (
       <div>
         {this.props.loginVisible && (
-          <button id="login" className="btn btn-secondary" onClick={this.login}>
+          <button id="login" className="button" onClick={this.login}>
             Log in
           </button>
         )}

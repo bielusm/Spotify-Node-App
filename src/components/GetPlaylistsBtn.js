@@ -3,7 +3,7 @@ import React from "react";
 const GetPlaylistsBtn = props => (
   <button
     id="getPlaylistsBtn"
-    className="btn btn-secondary"
+    className="button"
     onClick={props.getPlaylists}
     disabled={props.getPlaylistsDisabled}
   >

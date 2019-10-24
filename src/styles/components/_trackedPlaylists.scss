@@ -2,20 +2,21 @@
 
 
 .trackedPlaylists-header {
-    color: $dark-grey;
+    color: $darker-white;
 }
 
 .trackedPlaylists-list {
     margin: 1rem;
-    color: $light-grey;
+    color: $darker-white;
     padding: 20px;
 }
 
 .trackedPlaylists-list_item {
-    color: $dark-grey;
+    color: $darker-white;
+    border-radius: 20px;
     background-color: #6c757d;
     border: 1px solid $light-grey;
-    padding: 1rem;
+    padding: 0.7rem;
     display: flex;
     justify-content: space-between;
 
@@ -28,4 +29,22 @@
 
 .trackedPlaylists-list_item.button {
     display: inline;
+}
+
+.button-add {
+    background-color: green;
+    color: $darker-white;
+}
+
+.button-add:hover {
+    background-color: darken(green, 5%);
+}
+
+.button-remove {
+    background-color: red;
+    color: $darker-white;
+}
+
+.button-remove:hover {
+    background-color: darken(red, 5%);
 }

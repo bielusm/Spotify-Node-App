@@ -32,22 +32,22 @@ export default class Player extends React.Component {
   };
   render() {
     return (
-      <div>
-        <button className="btn btn-lg" onClick={this.prevTrack}>
+      <div className="player-container">
+        <button className="player-button" onClick={this.prevTrack}>
           <i className="fas fa-backward"></i>
         </button>
 
-        <button className="btn btn-lg" onClick={this.togglePause}>
+        <button className="player-button" onClick={this.togglePause}>
           <i
             className={
               "fas " + (this.props.is_playing ? "fa-pause" : "fa-play")
             }
           ></i>
         </button>
-        <button className="btn btn-lg" onClick={this.nextTrack}>
+        <button className="player-button" onClick={this.nextTrack}>
           <i className="fas fa-forward"></i>
         </button>
-        <button className="btn btn-lg" onClick={this.toggleLike}>
+        <button className="player-button" onClick={this.toggleLike}>
           <i
             className={this.props.likes_song ? "fas fa-heart" : "far fa-heart"}
           ></i>

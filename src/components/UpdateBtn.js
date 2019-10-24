@@ -3,7 +3,7 @@ import React from "react";
 const UpdateBtn = props => (
   <button
     id="updateBtn"
-    className="btn btn-secondary"
+    className="button"
     onClick={props.update}
     disabled={props.updateDisabled}
   >

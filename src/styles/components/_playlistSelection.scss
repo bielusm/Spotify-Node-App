@@ -1,26 +1,26 @@
 @import "../base/base";
 
-.playlistSelection_list {
+.playlist-selection__list {
     margin: 1rem;
-    color: $light-grey;
+    color: $darker-white;
     display: flex;
     flex-direction: column;
     padding: 20px;
 }
 
-.playlistSelection_item {
-    color: $dark-grey;
+.playlist-selection__item {
+    color: $darker-white;
     background-color: #6c757d;
     border: 1px solid $light-grey;
-    padding: 1rem;
+    padding: 0.7rem;
 }
 
-.playlistSelection_item:hover {
+.playlist-selection__item:hover {
     background-color: lighten(#6c757d, 10);
     color: black;
 }
 
-.playlistSelection_item.active {
+.playlist-selection__item.active {
     background-color: lighten(#6c757d, 20);
     color: black;
 }

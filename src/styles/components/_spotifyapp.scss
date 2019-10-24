@@ -1,10 +1,11 @@
 @import "../base/base";
 
 .container {
+    font-family: 'Muli', sans-serif;
     width: 80%;
-    margin: 0 auto;
-    padding-bottom: 1rem;
+    margin: 1rem auto;
+    padding: 0 1rem 1rem 1rem;
     background-color: $light-grey;
     border-radius: 25px;
-    color: $dark-grey;
+    color: $darker-white;
 }

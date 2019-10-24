@@ -153,7 +153,7 @@ export default class SpotifyApp extends React.Component {
     try {
       e.persist();
       const { tagName, id, classList } = e.target;
-      if (classList.contains("playlistSelection_item")) {
+      if (classList.contains("playlist-selection__item")) {
         const pl = this.state.playlists.find(pl => pl.id === id);
         const selected = !pl.selected;
         if (selected === true)
@@ -286,7 +286,7 @@ export default class SpotifyApp extends React.Component {
       <div>
         <div className="container">
           <Header />
-          <div className="btn-container">
+          <div className="button-container">
             <LoginBtn loginVisible={this.state.loginVisible} />
             <UpdateBtn update={this.update} />
             <GetPlaylistsBtn
