@@ -1,50 +1,52 @@
-@import '../base/base';
-
+@import "../base/base";
 
 .trackedPlaylists-header {
-    color: $darker-white;
+  color: $darker-white;
 }
 
 .trackedPlaylists-list {
-    margin: 1rem;
-    color: $darker-white;
-    padding: 20px;
+  margin: 1rem;
+  color: $darker-white;
+  padding: 20px;
 }
 
 .trackedPlaylists-list_item {
-    color: $darker-white;
-    border-radius: 20px;
-    background-color: #6c757d;
-    border: 1px solid $light-grey;
-    padding: 0.7rem;
-    display: flex;
-    justify-content: space-between;
-
+  color: $darker-white;
+  border-radius: 20px;
+  background-color: #6c757d;
+  border: 1px solid $light-grey;
+  padding: 0.3rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .trackedPlaylists-list_item_text {
-    max-width: 80%;
-    display: inline;
+  max-width: 80%;
+  display: inline;
 }
 
 .trackedPlaylists-list_item.button {
-    display: inline;
+  display: inline;
 }
 
 .button-add {
-    background-color: green;
-    color: $darker-white;
+  background-color: green;
+  color: $darker-white;
 }
 
 .button-add:hover {
-    background-color: darken(green, 5%);
+  background-color: darken(green, 5%);
 }
 
 .button-remove {
-    background-color: red;
-    color: $darker-white;
+  background-color: red;
+  color: $darker-white;
 }
 
 .button-remove:hover {
-    background-color: darken(red, 5%);
+  background-color: darken(red, 5%);
+}
+
+.trackedPlaylists-list-button {
+  padding: 0.5rem;
 }

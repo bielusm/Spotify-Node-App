@@ -1,22 +1,20 @@
 @import "../base/base";
 
-
 .button-container {
-    display: flex;
 }
 
 .button {
-    margin: 0.5rem;
-    padding: 1rem;
-    border-radius: 5px;
-    background-color: $darker-white;
-    border: 1px
+  margin: 0 0.5rem;
+  padding: 1rem;
+  border-radius: 5px;
+  background-color: $darker-white;
+  border: 1px;
 }
 
 .button:hover {
-    background-color: darken($darker-white, 10);
+  background-color: darken($darker-white, 10);
 }
 
 .button:disabled {
-    background-color: darken($darker-white, 20);
+  background-color: darken($darker-white, 20);
 }

@@ -1,14 +1,15 @@
 @import "../base/base";
 
 .player-button {
-    color: $darker-white;
-    background-color: transparent;
-    border: 1px solid $darker-white;
-    padding: 1rem;
-    border-radius: 5%;
+  color: $darker-white;
+  background-color: transparent;
+  border: 1px solid $darker-white;
+  padding: 1rem;
+  border-radius: 5%;
+  font-size: 1.5rem;
 }
 
 .player-button:hover {
-    color: darken($darker-white, 10%);
-    border-color: darken($darker-white, 10%);
+  color: darken($darker-white, 10%);
+  border-color: darken($darker-white, 10%);
 }

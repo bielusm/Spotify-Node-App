@@ -11,14 +11,17 @@ const TrackedPlaylists = props => (
             let button;
             if (!props.currentTrack || playlist.loading) {
               button = (
-                <button className="button" disabled>
+                <button
+                  className="button trackedPlaylists-list-button"
+                  disabled
+                >
                   Add
                 </button>
               );
             } else if (playlist.found) {
               button = (
                 <button
-                  className="button button-remove remove"
+                  className="button button-remove remove trackedPlaylists-list-button"
                   onClick={props.addOrRemove}
                 >
                   Remove
@@ -27,7 +30,7 @@ const TrackedPlaylists = props => (
             } else
               button = (
                 <button
-                  className="button button-add add"
+                  className="button button-add add trackedPlaylists-list-button"
                   onClick={props.addOrRemove}
                 >
                   Add
