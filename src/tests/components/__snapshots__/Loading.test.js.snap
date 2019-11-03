@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Loading snapshot while loading 1`] = `
+<div>
+  <div
+    className="loadingStatus"
+  >
+    <div
+      className="spinner-border"
+      role="status"
+    >
+      <span
+        className="sr-only"
+      />
+    </div>
+    <h2
+      className="mx-2 d-inline"
+    >
+      Loading...
+    </h2>
+  </div>
+</div>
+`;
+
+exports[`Loading snapshot while not loading 1`] = `<div />`;

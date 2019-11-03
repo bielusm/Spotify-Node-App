@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SpotifyApp snapshot test 1`] = `
+<div>
+  <div
+    className="container"
+  >
+    <Header />
+    <div
+      className="button-container"
+    >
+      <LoginBtn
+        loginVisible={true}
+      />
+      <UpdateBtn
+        update={[Function]}
+      />
+      <GetPlaylistsBtn
+        getPlaylists={[Function]}
+      />
+    </div>
+    <Connect(ErrorMsg) />
+    <TrackContext
+      trackContext=""
+    />
+    <Loading
+      loading={false}
+    />
+    <PlaylistSelection
+      selectPlaylist={[Function]}
+      showPlaylists={false}
+    />
+    <TrackedPlaylists
+      addOrRemove={[Function]}
+      currentTrack={null}
+      trackedPlaylists={Array []}
+    />
+  </div>
+</div>
+`;
