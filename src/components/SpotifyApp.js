@@ -13,15 +13,16 @@ import Player from "./Player";
 
 import { currentPlayer, likesSong } from "../api/player";
 import Playlists from "../api/playlists";
+import { connect } from "react-redux";
+import { setErrorMsg, resetErrorMsg } from "../store/actions/error";
 
-export default class SpotifyApp extends React.Component {
+export class SpotifyApp extends React.Component {
   state = {
     loginVisible: true,
     trackContext: "",
     showPlaylistsDiv: true,
     showTrackedPlaylists: false,
     showPlaylists: false,
-    errMsg: undefined,
     playlists: undefined,
     trackedPlaylists: [],
     loading: false
@@ -52,7 +53,6 @@ export default class SpotifyApp extends React.Component {
       this.markInPlaylist();
       if (this.updateTimer === null)
         this.updateTimer = setInterval(this.update, 2000);
-      this.success();
     } catch (msg) {
       this.error(msg);
     }
@@ -96,7 +96,6 @@ export default class SpotifyApp extends React.Component {
         this.setState({
           playlists
         });
-        this.success();
       } catch (msg) {
         this.error(msg);
         //do not show playlists on error
@@ -135,7 +134,7 @@ export default class SpotifyApp extends React.Component {
       });
       Promise.all(promises)
         .then(() => {})
-        .catch(msg => error(msg))
+        .catch(msg => this.error(msg))
         .finally(() => {
           this.setState(prevState => ({
             loading: false,
@@ -239,14 +238,9 @@ export default class SpotifyApp extends React.Component {
     }
   };
 
-  //clears the error msg on success
-  success = () => {
-    this.setState(() => ({ errMsg: undefined }));
-  };
-
   //handles error msgs given from rejected promises
   error = error => {
-    console.log(error);
+    console.log(error.message);
     const errLoc = document.querySelector("#errMsg");
     let msg = error.message;
     if (!isNaN(msg)) {
@@ -260,12 +254,18 @@ export default class SpotifyApp extends React.Component {
           msg =
             "Error: too many requests to spotify api, please wait a little and try again";
           break;
+        case 403:
+          msg = "I'm not authorized to perform this action";
+          break;
         default: {
           msg = status;
+          console.log(error);
         }
       }
     }
-    this.setState(() => ({ errMsg: msg }));
+    this.props.setErrorMsg(msg);
+    //clear message after a certain amount of time
+    setTimeout(this.props.resetErrorMsg, 5000);
   };
 
   componentDidMount() {
@@ -294,7 +294,7 @@ export default class SpotifyApp extends React.Component {
               disabled={this.state.getPlaylistsDisabled}
             />
           </div>
-          <ErrorMsg msg={this.state.errMsg} />
+          <ErrorMsg />
           <TrackContext trackContext={this.state.trackContext} />
 
           {this.currentTrack !== null && (
@@ -322,3 +322,13 @@ export default class SpotifyApp extends React.Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  setErrorMsg: error => dispatch(setErrorMsg(error)),
+  resetErrorMsg: () => dispatch(resetErrorMsg())
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(SpotifyApp);

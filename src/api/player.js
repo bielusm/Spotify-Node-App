@@ -1,4 +1,4 @@
-import fetchToJson from "./util";
+import { fetchToJson } from "./util";
 
 /**
  * [sets currentTrack as the current playing song]
