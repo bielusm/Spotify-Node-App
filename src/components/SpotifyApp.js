@@ -39,7 +39,7 @@ export default class SpotifyApp extends React.Component {
    */
   update = async () => {
     try {
-      //need to better parall this
+      //need to better parallelise this
       const newTrack = await currentPlayer(this.bearerToken);
       this.likesSong = await likesSong(this.bearerToken, newTrack.id);
       this.is_playing = newTrack.is_playing;

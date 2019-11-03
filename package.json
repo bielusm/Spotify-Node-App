@@ -30,6 +30,7 @@
   "dependencies": {
     "@babel/runtime": "^7.6.3",
     "core-js": "3",
+    "jest": "^24.9.0",
     "normalize.css": "^8.0.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2"
