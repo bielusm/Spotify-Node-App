@@ -4,8 +4,10 @@
   "description": "A manager for Spotify",
   "main": "app.js",
   "scripts": {
-    "build": "node_modules/.bin/webpack --mode production",
-    "server": "webpack-dev-server --mode development"
+    "build:dev": "node_modules/.bin/webpack",
+    "build:prod": "node_modules/.bin/webpack -p --env production",
+    "server": "webpack-dev-server --mode development",
+    "test": "jest --config=src/tests/jest.config.json"
   },
   "author": "Mitchell Bielus",
   "license": "ISC",
@@ -16,8 +18,11 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.6.3",
+    "@types/jest": "^24.0.21",
     "babel-loader": "^8.0.6",
     "css-loader": "^3.2.0",
+    "enzyme": "^3.10.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
@@ -28,8 +33,13 @@
   "dependencies": {
     "@babel/runtime": "^7.6.3",
     "core-js": "3",
+    "enzyme-adapter-react-16": "^1.15.1",
+    "enzyme-to-json": "^3.4.3",
+    "jest": "^24.9.0",
     "normalize.css": "^8.0.1",
     "react": "^16.10.2",
-    "react-dom": "^16.10.2"
+    "react-dom": "^16.10.2",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4"
   }
 }

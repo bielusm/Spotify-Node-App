@@ -1,13 +1,16 @@
 import React from "react";
+import { connect } from "react-redux";
 
-const ErrorMsg = props => (
-  <div>
-    {props.msg && (
+export const ErrorMsg = props => (
+  <>
+    {props.errMsg && (
       <h2 id="errMsg" className="my-4">
-        {props.msg}
+        {props.errMsg}
       </h2>
     )}
-  </div>
+  </>
 );
 
-export default ErrorMsg;
+const mapStateToProps = state => ({ errMsg: state });
+
+export default connect(mapStateToProps)(ErrorMsg);

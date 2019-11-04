@@ -1,4 +1,4 @@
-import fetchToJson from "./util";
+import { fetchErr, fetchToJson } from "./util";
 
 /**
  * Playlist
@@ -152,8 +152,8 @@ export default class Playlist {
       },
       method: "POST"
     };
+    await fetchErr(url, op);
     this.addTrackToCache(playlist_id, track);
-    return fetchToJson(url, op);
   }
 
   /**
@@ -181,8 +181,9 @@ export default class Playlist {
         ]
       })
     };
+
+    await fetchErr(url, op);
     this.removeTrackFromCache(playlist_id, track);
-    return await fetchToJson(url, op);
   }
 
   /**

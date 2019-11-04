@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loading = props => (
+export const Loading = props => (
   <div>
     {props.loading && (
       <div className="loadingStatus">

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot for no error msg 1`] = `<Fragment />`;
+
+exports[`Snapshot with error msg 1`] = `
+<Fragment>
+  <h2
+    className="my-4"
+    id="errMsg"
+  >
+    Sample error text
+  </h2>
+</Fragment>
+`;

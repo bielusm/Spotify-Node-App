@@ -1,6 +1,6 @@
 import React from "react";
 
-const GetPlaylistsBtn = props => (
+export const GetPlaylistsBtn = props => (
   <button
     id="getPlaylistsBtn"
     className="button"
