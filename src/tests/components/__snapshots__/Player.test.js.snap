@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test Player component with default values 1`] = `
+<div
+  className="player-container"
+>
+  <button
+    className="player-button prevBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-backward"
+    />
+  </button>
+  <button
+    className="player-button playBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-play"
+    />
+  </button>
+  <button
+    className="player-button nextBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-forward"
+    />
+  </button>
+  <button
+    className="player-button likeBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="far fa-heart"
+    />
+  </button>
+</div>
+`;
+
+exports[`Test Player component with set values 1`] = `
+<div
+  className="player-container"
+>
+  <button
+    className="player-button prevBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-backward"
+    />
+  </button>
+  <button
+    className="player-button playBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-pause"
+    />
+  </button>
+  <button
+    className="player-button nextBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-forward"
+    />
+  </button>
+  <button
+    className="player-button likeBtn"
+    onClick={[Function]}
+  >
+    <i
+      className="fas fa-heart"
+    />
+  </button>
+</div>
+`;

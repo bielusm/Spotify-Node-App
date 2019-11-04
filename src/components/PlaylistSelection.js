@@ -1,7 +1,7 @@
 import React from "react";
 
-const PlaylistSelection = props => (
-  <div>
+export const PlaylistSelection = props => (
+  <>
     {props.showPlaylists && (
       <div>
         <h2 className="playlist-selection__header">Your playlists:</h2>
@@ -24,7 +24,7 @@ const PlaylistSelection = props => (
         </div>
       </div>
     )}
-  </div>
+  </>
 );
 
 export default PlaylistSelection;
