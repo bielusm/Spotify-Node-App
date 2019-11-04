@@ -1,7 +1,7 @@
 import React from "react";
 
-const TrackedPlaylists = props => (
-  <div>
+export const TrackedPlaylists = props => (
+  <>
     {props.trackedPlaylists.length > 0 && (
       <div id="trackedPlaylists">
         <h2 className="trackedPlaylists-header">Tracked Playlists</h2>
@@ -53,7 +53,7 @@ const TrackedPlaylists = props => (
         </div>
       </div>
     )}
-  </div>
+  </>
 );
 
 export default TrackedPlaylists;
