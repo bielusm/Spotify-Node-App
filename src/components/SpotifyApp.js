@@ -15,6 +15,7 @@ import { currentPlayer, likesSong } from "../api/player";
 import Playlists from "../api/playlists";
 import { connect } from "react-redux";
 import { setErrorMsg, resetErrorMsg } from "../store/actions/error";
+import { setAccessToken } from "../store/actions/userInfo";
 
 export class SpotifyApp extends React.Component {
   state = {
@@ -27,7 +28,6 @@ export class SpotifyApp extends React.Component {
     trackedPlaylists: [],
     loading: false
   };
-  bearerToken = null;
   currentTrack = null;
 
   updateTimer = null;
@@ -41,8 +41,8 @@ export class SpotifyApp extends React.Component {
   update = async () => {
     try {
       //need to better parallelise this
-      const newTrack = await currentPlayer(this.bearerToken);
-      this.likesSong = await likesSong(this.bearerToken, newTrack.id);
+      const newTrack = await currentPlayer(this.props.access_token);
+      this.likesSong = await likesSong(this.props.access_token, newTrack.id);
       this.is_playing = newTrack.is_playing;
       if (
         this.currentTrack === null ||
@@ -53,8 +53,8 @@ export class SpotifyApp extends React.Component {
       this.markInPlaylist();
       if (this.updateTimer === null)
         this.updateTimer = setInterval(this.update, 2000);
-    } catch (msg) {
-      this.error(msg);
+    } catch (error) {
+      this.error(error);
     }
   };
 
@@ -86,7 +86,7 @@ export class SpotifyApp extends React.Component {
     if (this.state.playlists === undefined) {
       try {
         const playlistsFetch = await this.playlists.getPlaylists(
-          this.bearerToken
+          this.props.access_token
         );
 
         const playlists = playlistsFetch.items.map(item => ({
@@ -96,8 +96,8 @@ export class SpotifyApp extends React.Component {
         this.setState({
           playlists
         });
-      } catch (msg) {
-        this.error(msg);
+      } catch (error) {
+        this.error(error);
         //do not show playlists on error
         showPlaylists = false;
       }
@@ -125,7 +125,7 @@ export class SpotifyApp extends React.Component {
         if (playlist.loading) {
           promises.push(
             this.playlists.addPlaylistByID(
-              this.bearerToken,
+              this.props.access_token,
               playlist.id,
               playlist.name
             )
@@ -134,7 +134,7 @@ export class SpotifyApp extends React.Component {
       });
       Promise.all(promises)
         .then(() => {})
-        .catch(msg => this.error(msg))
+        .catch(error => this.error(error))
         .finally(() => {
           this.setState(prevState => ({
             loading: false,
@@ -185,8 +185,8 @@ export class SpotifyApp extends React.Component {
           })
         }));
       }
-    } catch (err) {
-      this.error(err);
+    } catch (error) {
+      this.error(error);
     }
   };
 
@@ -218,13 +218,13 @@ export class SpotifyApp extends React.Component {
       try {
         if (e.target.classList.contains("remove")) {
           await this.playlists.removeTrackFromPlaylist(
-            this.bearerToken,
+            this.props.access_token,
             playlist_id,
             this.currentTrack
           );
         } else {
           await this.playlists.addTrackToPlaylist(
-            this.bearerToken,
+            this.props.access_token,
             playlist_id,
             this.currentTrack
           );
@@ -232,40 +232,17 @@ export class SpotifyApp extends React.Component {
         this.update().finally(() => {
           e.target.disabled = false;
         });
-      } catch (err) {
-        this.error(err);
+      } catch (error) {
+        this.error(error);
       }
     }
   };
 
-  //handles error msgs given from rejected promises
   error = error => {
-    console.log(error.message);
-    const errLoc = document.querySelector("#errMsg");
-    let msg = error.message;
-    if (!isNaN(msg)) {
-      const status = parseInt(msg);
-      switch (status) {
-        case 401:
-          msg = "Please login, sessions are only valid for one hour";
-          this.setState(() => ({ loginVisible: true }));
-          break;
-        case 429:
-          msg =
-            "Error: too many requests to spotify api, please wait a little and try again";
-          break;
-        case 403:
-          msg = "I'm not authorized to perform this action";
-          break;
-        default: {
-          msg = status;
-          console.log(error);
-        }
-      }
-    }
-    this.props.setErrorMsg(msg);
-    //clear message after a certain amount of time
-    setTimeout(this.props.resetErrorMsg, 5000);
+    console.log("this is the error" + error.message);
+    if (error.message === "401") this.setState({ loginVisible: true });
+
+    this.props.setErrorMsg(error);
   };
 
   componentDidMount() {
@@ -277,13 +254,15 @@ export class SpotifyApp extends React.Component {
     hash = hash.replace("#", "?");
     const urlParams = new URLSearchParams(hash);
 
-    this.bearerToken = urlParams.get("access_token");
     this.playlists = new Playlists();
+    const bearerToken = urlParams.get("access_token");
+    this.props.setAccessToken(bearerToken);
   }
 
   render() {
     return (
-      <div>
+      <>
+        {console.log(this.props)}
         <div className="container">
           <Header />
           <div className="button-container">
@@ -299,7 +278,7 @@ export class SpotifyApp extends React.Component {
 
           {this.currentTrack !== null && (
             <Player
-              bearerToken={this.bearerToken}
+              bearerToken={this.props.access_token}
               is_playing={this.is_playing}
               likes_song={this.likesSong}
               id={this.currentTrack.id}
@@ -318,17 +297,24 @@ export class SpotifyApp extends React.Component {
             addOrRemove={this.addOrRemove}
           />
         </div>
-      </div>
+      </>
     );
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    access_token: state.userInfo.access_token
+  };
+};
+
 const mapDispatchToProps = dispatch => ({
   setErrorMsg: error => dispatch(setErrorMsg(error)),
-  resetErrorMsg: () => dispatch(resetErrorMsg())
+  resetErrorMsg: () => dispatch(resetErrorMsg()),
+  setAccessToken: bearerToken => dispatch(setAccessToken(bearerToken))
 });
 
 export default connect(
-  undefined,
+  mapStateToProps,
   mapDispatchToProps
 )(SpotifyApp);

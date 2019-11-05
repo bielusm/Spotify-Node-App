@@ -102,6 +102,8 @@ export const nextTrack = async bearerToken => {
       }
     );
   } catch (error) {
+    if (error.message == 403)
+      throw new Error("Cannot skip tracks if not premium");
     if (error.message != 204) throw error;
   }
 };

@@ -11,6 +11,6 @@ export const ErrorMsg = props => (
   </>
 );
 
-const mapStateToProps = state => ({ errMsg: state });
+const mapStateToProps = state => ({ errMsg: state.error });
 
 export default connect(mapStateToProps)(ErrorMsg);

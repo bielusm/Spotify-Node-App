@@ -8,6 +8,9 @@ import {
   prevTrack
 } from "../api/player";
 
+import { setErrorMsg } from "../store/actions/error";
+import { connect } from "react-redux";
+
 export class Player extends React.Component {
   togglePause = async () => {
     if (this.props.is_playing)
@@ -59,4 +62,11 @@ export class Player extends React.Component {
   }
 }
 
-export default Player;
+const mapDispatchToProps = dispatch => ({
+  setErrorMsg: error => dispatch(setErrorMsg(error))
+});
+
+export default connect(
+  undefined,
+  mapDispatchToProps
+)(Player);
