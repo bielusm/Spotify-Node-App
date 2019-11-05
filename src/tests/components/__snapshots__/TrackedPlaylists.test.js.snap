@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tracked playlist snapshot test 1`] = `
+<Fragment>
+  <div
+    id="trackedPlaylists"
+  >
+    <h2
+      className="trackedPlaylists-header"
+    >
+      Tracked Playlists
+    </h2>
+    <div
+      className="tracked trackedPlaylists-list"
+    >
+      <div
+        className="trackedPlaylists-list_item Big-rap-playlist"
+        id="4TL6CsXn7AFFrgMWMxq1XL"
+        key="4TL6CsXn7AFFrgMWMxq1XL"
+      >
+        <p
+          className="trackedPlaylists-list_item_text"
+        >
+          Big rap playlist
+        </p>
+        <button
+          className="button button-add add trackedPlaylists-list-button"
+          onClick={[MockFunction]}
+        >
+          Add
+        </button>
+      </div>
+      <div
+        className="trackedPlaylists-list_item everything"
+        id="6R4CXv7L5mETXDD3z9360j"
+        key="6R4CXv7L5mETXDD3z9360j"
+      >
+        <p
+          className="trackedPlaylists-list_item_text"
+        >
+          everything
+        </p>
+        <button
+          className="button button-add add trackedPlaylists-list-button"
+          onClick={[MockFunction]}
+        >
+          Add
+        </button>
+      </div>
+      <div
+        className="trackedPlaylists-list_item :O"
+        id="2lcW5jiLBwniHL8CyKg1H8"
+        key="2lcW5jiLBwniHL8CyKg1H8"
+      >
+        <p
+          className="trackedPlaylists-list_item_text"
+        >
+          :O
+        </p>
+        <button
+          className="button button-add add trackedPlaylists-list-button"
+          onClick={[MockFunction]}
+        >
+          Add
+        </button>
+      </div>
+    </div>
+  </div>
+</Fragment>
+`;
+
+exports[`Tracked playlist snapshot test no data 1`] = `<Fragment />`;

@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Update btn snapshot test 1`] = `
+<button
+  className="button"
+  id="updateBtn"
+  onClick={[MockFunction]}
+>
+  Update
+</button>
+`;

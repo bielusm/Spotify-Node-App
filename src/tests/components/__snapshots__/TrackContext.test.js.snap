@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CurrentTrack snapshot test 1`] = `
+<Fragment>
+  <h2
+    className="current-track"
+  >
+    This is a test track
+  </h2>
+</Fragment>
+`;
+
+exports[`CurrentTrack snapshot test no track 1`] = `<Fragment />`;
