@@ -256,7 +256,7 @@ export class SpotifyApp extends React.Component {
 
     this.playlists = new Playlists();
     const bearerToken = urlParams.get("access_token");
-    this.props.setAccessToken(bearerToken);
+    this.setState(() => ({ bearerToken: bearerToken }));
   }
 
   render() {
@@ -314,7 +314,4 @@ const mapDispatchToProps = dispatch => ({
   setAccessToken: bearerToken => dispatch(setAccessToken(bearerToken))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SpotifyApp);
+export default connect(mapStateToProps, mapDispatchToProps)(SpotifyApp);
