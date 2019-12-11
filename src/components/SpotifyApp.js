@@ -256,7 +256,7 @@ export class SpotifyApp extends React.Component {
 
     this.playlists = new Playlists();
     const bearerToken = urlParams.get("access_token");
-    this.setState(() => ({ bearerToken: bearerToken }));
+    this.props.setAccessToken(bearerToken);
   }
 
   render() {
