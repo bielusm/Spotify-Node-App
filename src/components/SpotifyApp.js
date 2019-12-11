@@ -262,7 +262,6 @@ export class SpotifyApp extends React.Component {
   render() {
     return (
       <>
-        {console.log(this.props)}
         <div className="container">
           <Header />
           <div className="button-container">
