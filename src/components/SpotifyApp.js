@@ -314,7 +314,4 @@ const mapDispatchToProps = dispatch => ({
   setAccessToken: bearerToken => dispatch(setAccessToken(bearerToken))
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SpotifyApp);
+export default connect(mapStateToProps, mapDispatchToProps)(SpotifyApp);
