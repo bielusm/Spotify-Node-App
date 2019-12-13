@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "@material-ui/core/Button";
 
 export class LoginBtn extends React.Component {
   login = () => {
@@ -13,9 +14,14 @@ export class LoginBtn extends React.Component {
     return (
       <>
         {this.props.loginVisible && (
-          <button id="login" className="button" onClick={this.login}>
+          <Button
+            id="login"
+            variant="contained"
+            color="primary"
+            onClick={this.login}
+          >
             Log in
-          </button>
+          </Button>
         )}
       </>
     );
