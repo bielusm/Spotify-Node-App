@@ -3,7 +3,7 @@ import React from "react";
 import Header from "./Header";
 import LoginBtn from "./LoginBtn";
 import UpdateBtn from "./UpdateBtn";
-import GetPlaylistsBtn from "./GetPlaylistsBtn";
+import PickPlaylistsBtn from "./PickPlaylistsBtn";
 import ErrorMsg from "./ErrorMsg";
 import TrackContext from "./TrackContext";
 import Loading from "./Loading";
@@ -267,7 +267,7 @@ export class SpotifyApp extends React.Component {
           <div className="button-container">
             <LoginBtn loginVisible={this.state.loginVisible} />
             <UpdateBtn update={this.update} />
-            <GetPlaylistsBtn
+            <PickPlaylistsBtn
               getPlaylists={this.getPlaylists}
               disabled={this.state.getPlaylistsDisabled}
             />

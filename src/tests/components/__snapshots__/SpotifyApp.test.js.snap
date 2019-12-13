@@ -15,7 +15,7 @@ exports[`SpotifyApp snapshot test 1`] = `
       <UpdateBtn
         update={[Function]}
       />
-      <GetPlaylistsBtn
+      <PickPlaylistsBtn
         getPlaylists={[Function]}
       />
     </div>

@@ -1,18 +1,18 @@
 @import "../base/base";
 
-.button {
-  display: inline;
-  margin: 0.5rem;
-  padding: 1rem;
-  border-radius: 5px;
-  background-color: $darker-white;
-  border: 1px;
-}
+// .button {
+//   display: inline;
+//   margin: 0.5rem;
+//   padding: 1rem;
+//   border-radius: 5px;
+//   background-color: $darker-white;
+//   border: 1px;
+// }
 
-.button:hover {
-  background-color: darken($darker-white, 10);
-}
+// .button:hover {
+//   background-color: darken($darker-white, 10);
+// }
 
-.button:disabled {
-  background-color: darken($darker-white, 20);
-}
+// .button:disabled {
+//   background-color: darken($darker-white, 20);
+// }

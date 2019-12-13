@@ -1,9 +1,16 @@
 import React from "react";
+import ReactDOM from "react-dom";
+import Button from "@material-ui/core/Button";
 
 export const UpdateBtn = props => (
-  <button id="updateBtn" className="button" onClick={props.update}>
+  <Button
+    id="updateBtn"
+    variant="contained"
+    color="primary"
+    onClick={props.update}
+  >
     Update
-  </button>
+  </Button>
 );
 
 export default UpdateBtn;

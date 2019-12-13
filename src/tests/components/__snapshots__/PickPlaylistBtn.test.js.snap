@@ -1,12 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Update btn snapshot test 1`] = `
+exports[`Snapshot for get playlists btn 1`] = `
 <WithStyles(ForwardRef(Button))
   color="primary"
-  id="updateBtn"
-  onClick={[MockFunction]}
+  id="pickPlaylistsBtn"
   variant="contained"
 >
-  Update
+  Pick playlists
 </WithStyles(ForwardRef(Button))>
 `;
