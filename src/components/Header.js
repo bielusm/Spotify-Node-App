@@ -1,4 +1,9 @@
 import React from "react";
+import { Typography } from "@material-ui/core";
 
-export const Header = () => <h1 className="header_title">Spotify Manager</h1>;
+export const Header = () => (
+  <Typography variant="h5" component="h3">
+    Spotify Manager
+  </Typography>
+);
 export default Header;

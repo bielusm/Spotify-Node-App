@@ -16,6 +16,8 @@ import Playlists from "../api/playlists";
 import { connect } from "react-redux";
 import { setErrorMsg, resetErrorMsg } from "../store/actions/error";
 import { setAccessToken } from "../store/actions/userInfo";
+import Paper from "@material-ui/core/Paper";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 export class SpotifyApp extends React.Component {
   state = {
@@ -262,40 +264,42 @@ export class SpotifyApp extends React.Component {
   render() {
     return (
       <>
-        <div className="container">
-          <Header />
-          <div className="button-container">
-            <LoginBtn loginVisible={this.state.loginVisible} />
-            <UpdateBtn update={this.update} />
-            <PickPlaylistsBtn
-              getPlaylists={this.getPlaylists}
-              disabled={this.state.getPlaylistsDisabled}
-            />
-          </div>
-          <ErrorMsg />
-          <TrackContext trackContext={this.state.trackContext} />
+        <CssBaseline>
+          <Paper>
+            <Header />
+            <div className="button-container">
+              <LoginBtn loginVisible={this.state.loginVisible} />
+              <UpdateBtn update={this.update} />
+              <PickPlaylistsBtn
+                getPlaylists={this.getPlaylists}
+                disabled={this.state.getPlaylistsDisabled}
+              />
+            </div>
+            <ErrorMsg />
+            <TrackContext trackContext={this.state.trackContext} />
 
-          {this.currentTrack !== null && (
-            <Player
-              bearerToken={this.props.access_token}
-              is_playing={this.is_playing}
-              likes_song={this.likesSong}
-              id={this.currentTrack.id}
-              update={this.update}
+            {this.currentTrack !== null && (
+              <Player
+                bearerToken={this.props.access_token}
+                is_playing={this.is_playing}
+                likes_song={this.likesSong}
+                id={this.currentTrack.id}
+                update={this.update}
+              />
+            )}
+            <Loading loading={this.state.loading} />
+            <PlaylistSelection
+              showPlaylists={this.state.showPlaylists}
+              playlists={this.state.playlists}
+              selectPlaylist={this.selectPlaylist}
             />
-          )}
-          <Loading loading={this.state.loading} />
-          <PlaylistSelection
-            showPlaylists={this.state.showPlaylists}
-            playlists={this.state.playlists}
-            selectPlaylist={this.selectPlaylist}
-          />
-          <TrackedPlaylists
-            trackedPlaylists={this.state.trackedPlaylists}
-            currentTrack={this.currentTrack}
-            addOrRemove={this.addOrRemove}
-          />
-        </div>
+            <TrackedPlaylists
+              trackedPlaylists={this.state.trackedPlaylists}
+              currentTrack={this.currentTrack}
+              addOrRemove={this.addOrRemove}
+            />
+          </Paper>
+        </CssBaseline>
       </>
     );
   }
