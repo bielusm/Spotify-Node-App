@@ -1,12 +1,27 @@
 import React from "react";
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
+} from "@material-ui/core";
 
 export const TrackedPlaylists = props => (
   <>
     {props.trackedPlaylists.length > 0 && (
-      <div id="trackedPlaylists">
-        <h2 className="trackedPlaylists-header">Tracked Playlists</h2>
-        <div className="tracked trackedPlaylists-list">
+      <Table id="trackedPlaylists">
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Typography className="trackedPlaylists-header">
+                Tracked Playlists
+              </Typography>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {props.trackedPlaylists.map(playlist => {
             const plName = playlist.name.replace(/ /g, "-");
             let button;
@@ -44,20 +59,25 @@ export const TrackedPlaylists = props => (
               );
 
             return (
-              <div
+              <TableRow
                 key={playlist.id}
                 id={playlist.id}
                 className={"trackedPlaylists-list_item " + plName}
               >
-                <p className="trackedPlaylists-list_item_text">
-                  {playlist.name}
-                </p>
-                {button}
-              </div>
+                <TableCell>
+                  <Typography
+                    variant="p"
+                    className="trackedPlaylists-list_item_text"
+                  >
+                    {playlist.name}
+                  </Typography>
+                </TableCell>
+                <TableCell>{button}</TableCell>
+              </TableRow>
             );
           })}
-        </div>
-      </div>
+        </TableBody>
+      </Table>
     )}
   </>
 );

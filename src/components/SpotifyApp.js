@@ -213,17 +213,17 @@ export class SpotifyApp extends React.Component {
 
   addOrRemove = async e => {
     var target = e.target;
-    var button, div;
-    while (target.tagName !== "DIV") {
+    var button, tr;
+    while (target.tagName !== "TR") {
       if (target.tagName === "BUTTON") {
         button = target;
       }
       target = target.parentElement;
     }
     button.disabled = true;
-    var div = target;
+    var tr = target;
 
-    const playlist_id = div.id;
+    const playlist_id = tr.id;
     let track_uri = this.currentTrack.uri;
     let promise = null;
     try {

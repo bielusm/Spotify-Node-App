@@ -2,76 +2,95 @@
 
 exports[`Tracked playlist snapshot test 1`] = `
 <Fragment>
-  <div
+  <WithStyles(ForwardRef(Table))
     id="trackedPlaylists"
   >
-    <h2
-      className="trackedPlaylists-header"
-    >
-      Tracked Playlists
-    </h2>
-    <div
-      className="tracked trackedPlaylists-list"
-    >
-      <div
+    <WithStyles(ForwardRef(TableHead))>
+      <WithStyles(ForwardRef(TableRow))>
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Typography))
+            className="trackedPlaylists-header"
+          >
+            Tracked Playlists
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+    </WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableBody))>
+      <WithStyles(ForwardRef(TableRow))
         className="trackedPlaylists-list_item Big-rap-playlist"
         id="4TL6CsXn7AFFrgMWMxq1XL"
         key="4TL6CsXn7AFFrgMWMxq1XL"
       >
-        <p
-          className="trackedPlaylists-list_item_text"
-        >
-          Big rap playlist
-        </p>
-        <WithStyles(ForwardRef(Button))
-          className="button button-add add trackedPlaylists-list-button"
-          color="primary"
-          onClick={[MockFunction]}
-          variant="contained"
-        >
-          Add
-        </WithStyles(ForwardRef(Button))>
-      </div>
-      <div
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Typography))
+            className="trackedPlaylists-list_item_text"
+            variant="p"
+          >
+            Big rap playlist
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(TableCell))>
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Button))
+            className="button button-add add trackedPlaylists-list-button"
+            color="primary"
+            onClick={[MockFunction]}
+            variant="contained"
+          >
+            Add
+          </WithStyles(ForwardRef(Button))>
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableRow))
         className="trackedPlaylists-list_item everything"
         id="6R4CXv7L5mETXDD3z9360j"
         key="6R4CXv7L5mETXDD3z9360j"
       >
-        <p
-          className="trackedPlaylists-list_item_text"
-        >
-          everything
-        </p>
-        <WithStyles(ForwardRef(Button))
-          className="button button-add add trackedPlaylists-list-button"
-          color="primary"
-          onClick={[MockFunction]}
-          variant="contained"
-        >
-          Add
-        </WithStyles(ForwardRef(Button))>
-      </div>
-      <div
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Typography))
+            className="trackedPlaylists-list_item_text"
+            variant="p"
+          >
+            everything
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(TableCell))>
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Button))
+            className="button button-add add trackedPlaylists-list-button"
+            color="primary"
+            onClick={[MockFunction]}
+            variant="contained"
+          >
+            Add
+          </WithStyles(ForwardRef(Button))>
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableRow))
         className="trackedPlaylists-list_item :O"
         id="2lcW5jiLBwniHL8CyKg1H8"
         key="2lcW5jiLBwniHL8CyKg1H8"
       >
-        <p
-          className="trackedPlaylists-list_item_text"
-        >
-          :O
-        </p>
-        <WithStyles(ForwardRef(Button))
-          className="button button-add add trackedPlaylists-list-button"
-          color="primary"
-          onClick={[MockFunction]}
-          variant="contained"
-        >
-          Add
-        </WithStyles(ForwardRef(Button))>
-      </div>
-    </div>
-  </div>
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Typography))
+            className="trackedPlaylists-list_item_text"
+            variant="p"
+          >
+            :O
+          </WithStyles(ForwardRef(Typography))>
+        </WithStyles(ForwardRef(TableCell))>
+        <WithStyles(ForwardRef(TableCell))>
+          <WithStyles(ForwardRef(Button))
+            className="button button-add add trackedPlaylists-list-button"
+            color="primary"
+            onClick={[MockFunction]}
+            variant="contained"
+          >
+            Add
+          </WithStyles(ForwardRef(Button))>
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+    </WithStyles(ForwardRef(TableBody))>
+  </WithStyles(ForwardRef(Table))>
 </Fragment>
 `;
 
