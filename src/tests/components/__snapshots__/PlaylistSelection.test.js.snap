@@ -4,116 +4,42 @@ exports[`Snapshot with showPlaylists false 1`] = `<Fragment />`;
 
 exports[`Snapshot with showPlaylists true 1`] = `
 <Fragment>
-  <div>
-    <h2
-      className="playlist-selection__header"
-    >
-      Your playlists:
-    </h2>
-    <div
-      className="playlist-selection__list"
-      id="playlist-selection"
+  <WithStyles(ForwardRef(Table))>
+    <WithStyles(ForwardRef(TableHead))>
+      <WithStyles(ForwardRef(TableRow))>
+        <WithStyles(ForwardRef(TableCell))>
+          Your playlists
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+    </WithStyles(ForwardRef(TableHead))>
+    <WithStyles(ForwardRef(TableBody))
       onClick={[MockFunction]}
     >
-      <div
-        className="playlist-selection__item"
-        id="3F94pf3iVnCOSe0lvHUuIl"
+      <WithStyles(ForwardRef(TableRow))
+        hover={true}
         key="New Playlist 2"
+        selected={false}
       >
-        New Playlist 2
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="3iKeac3IvswDw05mv1dc3z"
+        <WithStyles(ForwardRef(TableCell))
+          className="playlist-selection__item"
+          id="3F94pf3iVnCOSe0lvHUuIl"
+        >
+          New Playlist 2
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+      <WithStyles(ForwardRef(TableRow))
+        hover={true}
         key="api testing"
+        selected={false}
       >
-        api testing
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="43x3DlIWcCJzEBNEBEDHHh"
-        key="piano"
-      >
-        piano
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="4TL6CsXn7AFFrgMWMxq1XL"
-        key="Big rap playlist"
-      >
-        Big rap playlist
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="6R4CXv7L5mETXDD3z9360j"
-        key="everything"
-      >
-        everything
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="75fBy2AgLDGKoOyCfYwGSG"
-        key="calm"
-      >
-        calm
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="2PnJuP3B7Lm2DPs8nEqpiq"
-        key="bad programming playlist"
-      >
-        bad programming playlist
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="2lcW5jiLBwniHL8CyKg1H8"
-        key=":O"
-      >
-        :O
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="23cUfHhE4yOIHGEpCus559"
-        key="top"
-      >
-        top
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="37i9dQZEVXcIBiEFq8ePzj"
-        key="Discover Weekly"
-      >
-        Discover Weekly
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="37i9dQZEVXblmn3RrluvDS"
-        key="Release Radar"
-      >
-        Release Radar
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="6SFU42MrxusLKBM2dywtmY"
-        key="Go through"
-      >
-        Go through
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="6uuht6sd1Rm5lFvAoRgzAj"
-        key="mishmash"
-      >
-        mishmash
-      </div>
-      <div
-        className="playlist-selection__item"
-        id="1A7bJ7EKtT9XqpN0yV9qCf"
-        key="drums"
-      >
-        drums
-      </div>
-    </div>
-  </div>
+        <WithStyles(ForwardRef(TableCell))
+          className="playlist-selection__item"
+          id="3iKeac3IvswDw05mv1dc3z"
+        >
+          api testing
+        </WithStyles(ForwardRef(TableCell))>
+      </WithStyles(ForwardRef(TableRow))>
+    </WithStyles(ForwardRef(TableBody))>
+  </WithStyles(ForwardRef(Table))>
 </Fragment>
 `;
