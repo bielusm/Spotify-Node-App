@@ -275,14 +275,12 @@ export class SpotifyApp extends React.Component {
         <CssBaseline>
           <Paper>
             <Header />
-            {/* <div className="button-container"> */}
             <LoginBtn loginVisible={this.state.loginVisible} />
             <UpdateBtn update={this.update} />
             <PickPlaylistsBtn
               getPlaylists={this.getPlaylists}
               disabled={this.state.getPlaylistsDisabled}
             />
-            {/* </div> */}
             <ErrorMsg />
             <TrackContext trackContext={this.state.trackContext} />
 
