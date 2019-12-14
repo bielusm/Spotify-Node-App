@@ -23,12 +23,14 @@ exports[`Tracked playlist snapshot test 1`] = `
         >
           Big rap playlist
         </p>
-        <button
+        <WithStyles(ForwardRef(Button))
           className="button button-add add trackedPlaylists-list-button"
+          color="primary"
           onClick={[MockFunction]}
+          variant="contained"
         >
           Add
-        </button>
+        </WithStyles(ForwardRef(Button))>
       </div>
       <div
         className="trackedPlaylists-list_item everything"
@@ -40,12 +42,14 @@ exports[`Tracked playlist snapshot test 1`] = `
         >
           everything
         </p>
-        <button
+        <WithStyles(ForwardRef(Button))
           className="button button-add add trackedPlaylists-list-button"
+          color="primary"
           onClick={[MockFunction]}
+          variant="contained"
         >
           Add
-        </button>
+        </WithStyles(ForwardRef(Button))>
       </div>
       <div
         className="trackedPlaylists-list_item :O"
@@ -57,12 +61,14 @@ exports[`Tracked playlist snapshot test 1`] = `
         >
           :O
         </p>
-        <button
+        <WithStyles(ForwardRef(Button))
           className="button button-add add trackedPlaylists-list-button"
+          color="primary"
           onClick={[MockFunction]}
+          variant="contained"
         >
           Add
-        </button>
+        </WithStyles(ForwardRef(Button))>
       </div>
     </div>
   </div>

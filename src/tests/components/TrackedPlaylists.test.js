@@ -5,6 +5,7 @@ import {
   trackedPlaylists as trackedPlaylistsFixture,
   currentTrack as currentTrackFixture
 } from "../fixtures/trackedPlaylists";
+import { Button } from "@material-ui/core";
 
 let wrapper, trackedPlaylists, currentTrack, addOrRemove;
 
@@ -32,7 +33,7 @@ test("Tracked playlist snapshot test no data", () => {
 
 test("Test add or remove click", () => {
   wrapper
-    .find("button")
+    .find(Button)
     .at(0)
     .simulate("click");
   expect(addOrRemove).toHaveBeenCalled();

@@ -1,4 +1,5 @@
 import React from "react";
+import { Button } from "@material-ui/core";
 
 export const TrackedPlaylists = props => (
   <>
@@ -11,30 +12,35 @@ export const TrackedPlaylists = props => (
             let button;
             if (!props.currentTrack || playlist.loading) {
               button = (
-                <button
-                  className="button trackedPlaylists-list-button"
+                <Button
+                  variant="contained"
+                  className="trackedPlaylists-list-button"
                   disabled
                 >
                   Add
-                </button>
+                </Button>
               );
             } else if (playlist.found) {
               button = (
-                <button
+                <Button
+                  variant="contained"
+                  color="secondary"
                   className="button button-remove remove trackedPlaylists-list-button"
                   onClick={props.addOrRemove}
                 >
                   Remove
-                </button>
+                </Button>
               );
             } else
               button = (
-                <button
+                <Button
+                  variant="contained"
+                  color="primary"
                   className="button button-add add trackedPlaylists-list-button"
                   onClick={props.addOrRemove}
                 >
                   Add
-                </button>
+                </Button>
               );
 
             return (

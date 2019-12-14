@@ -212,32 +212,39 @@ export class SpotifyApp extends React.Component {
   };
 
   addOrRemove = async e => {
-    if (e.target.tagName === "BUTTON") {
-      e.persist();
-      e.target.disabled = true;
-      const playlist_id = e.target.parentElement.id;
-      let track_uri = this.currentTrack.uri;
-      let promise = null;
-      try {
-        if (e.target.classList.contains("remove")) {
-          await this.playlists.removeTrackFromPlaylist(
-            this.props.access_token,
-            playlist_id,
-            this.currentTrack
-          );
-        } else {
-          await this.playlists.addTrackToPlaylist(
-            this.props.access_token,
-            playlist_id,
-            this.currentTrack
-          );
-        }
-        this.update().finally(() => {
-          e.target.disabled = false;
-        });
-      } catch (error) {
-        this.error(error);
+    var target = e.target;
+    var button, div;
+    while (target.tagName !== "DIV") {
+      if (target.tagName === "BUTTON") {
+        button = target;
       }
+      target = target.parentElement;
+    }
+    button.disabled = true;
+    var div = target;
+
+    const playlist_id = div.id;
+    let track_uri = this.currentTrack.uri;
+    let promise = null;
+    try {
+      if (button.classList.contains("remove")) {
+        await this.playlists.removeTrackFromPlaylist(
+          this.props.access_token,
+          playlist_id,
+          this.currentTrack
+        );
+      } else {
+        await this.playlists.addTrackToPlaylist(
+          this.props.access_token,
+          playlist_id,
+          this.currentTrack
+        );
+      }
+      this.update().finally(() => {
+        button.disabled = false;
+      });
+    } catch (error) {
+      this.error(error);
     }
   };
 
