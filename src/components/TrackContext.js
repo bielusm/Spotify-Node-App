@@ -1,9 +1,12 @@
 import React from "react";
+import Typography from "@material-ui/core/Typography";
 
 export const TrackContext = props => (
   <>
     {props.trackContext && (
-      <h2 className="current-track">{props.trackContext}</h2>
+      <Typography component="h3" variant="h5">
+        {props.trackContext}
+      </Typography>
     )}
   </>
 );

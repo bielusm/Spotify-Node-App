@@ -2,11 +2,12 @@
 
 exports[`CurrentTrack snapshot test 1`] = `
 <Fragment>
-  <h2
-    className="current-track"
+  <WithStyles(ForwardRef(Typography))
+    component="h3"
+    variant="h5"
   >
     This is a test track
-  </h2>
+  </WithStyles(ForwardRef(Typography))>
 </Fragment>
 `;
 

@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Header snapshot test 1`] = `
-<h1
-  className="header_title"
+<WithStyles(ForwardRef(Typography))
+  component="h3"
+  variant="h5"
 >
   Spotify Manager
-</h1>
+</WithStyles(ForwardRef(Typography))>
 `;

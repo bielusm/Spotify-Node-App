@@ -16,6 +16,7 @@ import Playlists from "../api/playlists";
 import { connect } from "react-redux";
 import { setErrorMsg, resetErrorMsg } from "../store/actions/error";
 import { setAccessToken } from "../store/actions/userInfo";
+
 import Paper from "@material-ui/core/Paper";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
@@ -267,14 +268,14 @@ export class SpotifyApp extends React.Component {
         <CssBaseline>
           <Paper>
             <Header />
-            <div className="button-container">
-              <LoginBtn loginVisible={this.state.loginVisible} />
-              <UpdateBtn update={this.update} />
-              <PickPlaylistsBtn
-                getPlaylists={this.getPlaylists}
-                disabled={this.state.getPlaylistsDisabled}
-              />
-            </div>
+            {/* <div className="button-container"> */}
+            <LoginBtn loginVisible={this.state.loginVisible} />
+            <UpdateBtn update={this.update} />
+            <PickPlaylistsBtn
+              getPlaylists={this.getPlaylists}
+              disabled={this.state.getPlaylistsDisabled}
+            />
+            {/* </div> */}
             <ErrorMsg />
             <TrackContext trackContext={this.state.trackContext} />
 
