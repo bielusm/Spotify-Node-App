@@ -1,6 +1,7 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { UpdateBtn } from "../../components/UpdateBtn";
+import Button from "@material-ui/core/Button";
 
 let wrapper, update;
 
@@ -14,6 +15,6 @@ test("Update btn snapshot test", () => {
 });
 
 test("updatebtn test", () => {
-  wrapper.find("button").simulate("click");
+  wrapper.find(Button).simulate("click");
   expect(update).toHaveBeenCalled();
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, IconButton } from "@material-ui/core";
 
 import {
   modifyLibrary,
@@ -37,27 +38,30 @@ export class Player extends React.Component {
   };
   render() {
     return (
-      <div className="player-container">
-        <button className="player-button prevBtn" onClick={this.prevTrack}>
-          <i className="fas fa-backward"></i>
-        </button>
+      <>
+        <IconButton
+          className="prevBtn fas fa-backward"
+          onClick={this.prevTrack}
+        />
 
-        <button className="player-button playBtn" onClick={this.togglePause}>
-          <i
-            className={
-              "fas " + (this.props.is_playing ? "fa-pause" : "fa-play")
-            }
-          ></i>
-        </button>
-        <button className="player-button nextBtn" onClick={this.nextTrack}>
-          <i className="fas fa-forward"></i>
-        </button>
-        <button className="player-button likeBtn" onClick={this.toggleLike}>
-          <i
-            className={this.props.likes_song ? "fas fa-heart" : "far fa-heart"}
-          ></i>
-        </button>
-      </div>
+        <IconButton
+          className={
+            "playBtn fas " + (this.props.is_playing ? "fa-pause" : "fa-play")
+          }
+          onClick={this.togglePause}
+        />
+        <IconButton
+          className="nextBtn fas fa-forward"
+          onClick={this.nextTrack}
+        />
+        <IconButton
+          className={
+            "likeBtn " +
+            (this.props.likes_song ? "fas fa-heart" : "far fa-heart")
+          }
+          onClick={this.toggleLike}
+        />
+      </>
     );
   }
 }
@@ -66,7 +70,4 @@ const mapDispatchToProps = dispatch => ({
   setErrorMsg: error => dispatch(setErrorMsg(error))
 });
 
-export default connect(
-  undefined,
-  mapDispatchToProps
-)(Player);
+export default connect(undefined, mapDispatchToProps)(Player);

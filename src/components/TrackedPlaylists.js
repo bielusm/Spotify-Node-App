@@ -1,57 +1,81 @@
 import React from "react";
+import { Button, Typography } from "@material-ui/core";
+import {
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell
+} from "@material-ui/core";
 
 export const TrackedPlaylists = props => (
   <>
     {props.trackedPlaylists.length > 0 && (
-      <div id="trackedPlaylists">
-        <h2 className="trackedPlaylists-header">Tracked Playlists</h2>
-        <div className="tracked trackedPlaylists-list">
+      <Table id="trackedPlaylists">
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <Typography className="trackedPlaylists-header">
+                Tracked Playlists
+              </Typography>
+            </TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
           {props.trackedPlaylists.map(playlist => {
             const plName = playlist.name.replace(/ /g, "-");
             let button;
             if (!props.currentTrack || playlist.loading) {
               button = (
-                <button
-                  className="button trackedPlaylists-list-button"
+                <Button
+                  variant="contained"
+                  className="trackedPlaylists-list-button"
                   disabled
                 >
                   Add
-                </button>
+                </Button>
               );
             } else if (playlist.found) {
               button = (
-                <button
+                <Button
+                  variant="contained"
+                  color="secondary"
                   className="button button-remove remove trackedPlaylists-list-button"
                   onClick={props.addOrRemove}
                 >
                   Remove
-                </button>
+                </Button>
               );
             } else
               button = (
-                <button
+                <Button
+                  variant="contained"
+                  color="primary"
                   className="button button-add add trackedPlaylists-list-button"
                   onClick={props.addOrRemove}
                 >
                   Add
-                </button>
+                </Button>
               );
 
             return (
-              <div
+              <TableRow
                 key={playlist.id}
                 id={playlist.id}
                 className={"trackedPlaylists-list_item " + plName}
               >
-                <p className="trackedPlaylists-list_item_text">
-                  {playlist.name}
-                </p>
-                {button}
-              </div>
+                <TableCell>
+                  <Typography className="trackedPlaylists-list_item_text">
+                    {playlist.name}
+                  </Typography>
+                </TableCell>
+                <TableCell>{button}</TableCell>
+              </TableRow>
             );
           })}
-        </div>
-      </div>
+        </TableBody>
+      </Table>
     )}
   </>
 );

@@ -2,39 +2,35 @@
 
 exports[`SpotifyApp snapshot test 1`] = `
 <Fragment>
-  <div
-    className="container"
-  >
-    <Header />
-    <div
-      className="button-container"
-    >
+  <CssBaseline>
+    <WithStyles(ForwardRef(Paper))>
+      <Header />
       <LoginBtn
         loginVisible={true}
       />
       <UpdateBtn
         update={[Function]}
       />
-      <GetPlaylistsBtn
+      <PickPlaylistsBtn
         getPlaylists={[Function]}
       />
-    </div>
-    <Connect(ErrorMsg) />
-    <TrackContext
-      trackContext=""
-    />
-    <Loading
-      loading={false}
-    />
-    <PlaylistSelection
-      selectPlaylist={[Function]}
-      showPlaylists={false}
-    />
-    <TrackedPlaylists
-      addOrRemove={[Function]}
-      currentTrack={null}
-      trackedPlaylists={Array []}
-    />
-  </div>
+      <Connect(ErrorMsg) />
+      <TrackContext
+        trackContext=""
+      />
+      <Loading
+        loading={false}
+      />
+      <PlaylistSelection
+        selectPlaylist={[Function]}
+        showPlaylists={false}
+      />
+      <TrackedPlaylists
+        addOrRemove={[Function]}
+        currentTrack={null}
+        trackedPlaylists={Array []}
+      />
+    </WithStyles(ForwardRef(Paper))>
+  </CssBaseline>
 </Fragment>
 `;

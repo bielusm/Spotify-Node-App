@@ -1,8 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { GetPlaylistsBtn } from "../../components/GetPlaylistsBtn";
+import { PickPlaylistsBtn } from "../../components/PickPlaylistsBtn";
 
 test("Snapshot for get playlists btn", () => {
-  const wrapper = shallow(<GetPlaylistsBtn />);
+  const wrapper = shallow(<PickPlaylistsBtn />);
   expect(wrapper).toMatchSnapshot();
 });

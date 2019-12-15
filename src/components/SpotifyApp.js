@@ -3,7 +3,7 @@ import React from "react";
 import Header from "./Header";
 import LoginBtn from "./LoginBtn";
 import UpdateBtn from "./UpdateBtn";
-import GetPlaylistsBtn from "./GetPlaylistsBtn";
+import PickPlaylistsBtn from "./PickPlaylistsBtn";
 import ErrorMsg from "./ErrorMsg";
 import TrackContext from "./TrackContext";
 import Loading from "./Loading";
@@ -16,6 +16,10 @@ import Playlists from "../api/playlists";
 import { connect } from "react-redux";
 import { setErrorMsg, resetErrorMsg } from "../store/actions/error";
 import { setAccessToken } from "../store/actions/userInfo";
+
+import Paper from "@material-ui/core/Paper";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { withStyles } from "@material-ui/core";
 
 export class SpotifyApp extends React.Component {
   state = {
@@ -209,32 +213,39 @@ export class SpotifyApp extends React.Component {
   };
 
   addOrRemove = async e => {
-    if (e.target.tagName === "BUTTON") {
-      e.persist();
-      e.target.disabled = true;
-      const playlist_id = e.target.parentElement.id;
-      let track_uri = this.currentTrack.uri;
-      let promise = null;
-      try {
-        if (e.target.classList.contains("remove")) {
-          await this.playlists.removeTrackFromPlaylist(
-            this.props.access_token,
-            playlist_id,
-            this.currentTrack
-          );
-        } else {
-          await this.playlists.addTrackToPlaylist(
-            this.props.access_token,
-            playlist_id,
-            this.currentTrack
-          );
-        }
-        this.update().finally(() => {
-          e.target.disabled = false;
-        });
-      } catch (error) {
-        this.error(error);
+    var target = e.target;
+    var button, tr;
+    while (target.tagName !== "TR") {
+      if (target.tagName === "BUTTON") {
+        button = target;
       }
+      target = target.parentElement;
+    }
+    button.disabled = true;
+    var tr = target;
+
+    const playlist_id = tr.id;
+    let track_uri = this.currentTrack.uri;
+    let promise = null;
+    try {
+      if (button.classList.contains("remove")) {
+        await this.playlists.removeTrackFromPlaylist(
+          this.props.access_token,
+          playlist_id,
+          this.currentTrack
+        );
+      } else {
+        await this.playlists.addTrackToPlaylist(
+          this.props.access_token,
+          playlist_id,
+          this.currentTrack
+        );
+      }
+      this.update().finally(() => {
+        button.disabled = false;
+      });
+    } catch (error) {
+      this.error(error);
     }
   };
 
@@ -262,40 +273,40 @@ export class SpotifyApp extends React.Component {
   render() {
     return (
       <>
-        <div className="container">
-          <Header />
-          <div className="button-container">
+        <CssBaseline>
+          <Paper>
+            <Header />
             <LoginBtn loginVisible={this.state.loginVisible} />
             <UpdateBtn update={this.update} />
-            <GetPlaylistsBtn
+            <PickPlaylistsBtn
               getPlaylists={this.getPlaylists}
               disabled={this.state.getPlaylistsDisabled}
             />
-          </div>
-          <ErrorMsg />
-          <TrackContext trackContext={this.state.trackContext} />
+            <ErrorMsg />
+            <TrackContext trackContext={this.state.trackContext} />
 
-          {this.currentTrack !== null && (
-            <Player
-              bearerToken={this.props.access_token}
-              is_playing={this.is_playing}
-              likes_song={this.likesSong}
-              id={this.currentTrack.id}
-              update={this.update}
+            {this.currentTrack !== null && (
+              <Player
+                bearerToken={this.props.access_token}
+                is_playing={this.is_playing}
+                likes_song={this.likesSong}
+                id={this.currentTrack.id}
+                update={this.update}
+              />
+            )}
+            <Loading loading={this.state.loading} />
+            <PlaylistSelection
+              showPlaylists={this.state.showPlaylists}
+              playlists={this.state.playlists}
+              selectPlaylist={this.selectPlaylist}
             />
-          )}
-          <Loading loading={this.state.loading} />
-          <PlaylistSelection
-            showPlaylists={this.state.showPlaylists}
-            playlists={this.state.playlists}
-            selectPlaylist={this.selectPlaylist}
-          />
-          <TrackedPlaylists
-            trackedPlaylists={this.state.trackedPlaylists}
-            currentTrack={this.currentTrack}
-            addOrRemove={this.addOrRemove}
-          />
-        </div>
+            <TrackedPlaylists
+              trackedPlaylists={this.state.trackedPlaylists}
+              currentTrack={this.currentTrack}
+              addOrRemove={this.addOrRemove}
+            />
+          </Paper>
+        </CssBaseline>
       </>
     );
   }
