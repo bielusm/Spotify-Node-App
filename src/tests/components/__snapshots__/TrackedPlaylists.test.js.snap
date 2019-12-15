@@ -14,6 +14,7 @@ exports[`Tracked playlist snapshot test 1`] = `
             Tracked Playlists
           </WithStyles(ForwardRef(Typography))>
         </WithStyles(ForwardRef(TableCell))>
+        <WithStyles(ForwardRef(TableCell)) />
       </WithStyles(ForwardRef(TableRow))>
     </WithStyles(ForwardRef(TableHead))>
     <WithStyles(ForwardRef(TableBody))>

@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 
 export const PlaylistSelection = props => (
-  <>
+  <div className="tableContainer">
     {props.showPlaylists && (
       <Table>
         <TableHead>
@@ -30,7 +30,7 @@ export const PlaylistSelection = props => (
         </TableBody>
       </Table>
     )}
-  </>
+  </div>
 );
 
 export default PlaylistSelection;

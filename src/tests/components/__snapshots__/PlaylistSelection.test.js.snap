@@ -1,9 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Snapshot with showPlaylists false 1`] = `<Fragment />`;
+exports[`Snapshot with showPlaylists false 1`] = `
+<div
+  className="tableContainer"
+/>
+`;
 
 exports[`Snapshot with showPlaylists true 1`] = `
-<Fragment>
+<div
+  className="tableContainer"
+>
   <WithStyles(ForwardRef(Table))>
     <WithStyles(ForwardRef(TableHead))>
       <WithStyles(ForwardRef(TableRow))>
@@ -41,5 +47,5 @@ exports[`Snapshot with showPlaylists true 1`] = `
       </WithStyles(ForwardRef(TableRow))>
     </WithStyles(ForwardRef(TableBody))>
   </WithStyles(ForwardRef(Table))>
-</Fragment>
+</div>
 `;

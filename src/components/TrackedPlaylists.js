@@ -19,6 +19,7 @@ export const TrackedPlaylists = props => (
                 Tracked Playlists
               </Typography>
             </TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
