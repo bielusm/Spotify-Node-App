@@ -19,6 +19,7 @@ import { setAccessToken } from "../store/actions/userInfo";
 
 import Paper from "@material-ui/core/Paper";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { withStyles } from "@material-ui/core";
 
 export class SpotifyApp extends React.Component {
   state = {

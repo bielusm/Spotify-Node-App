@@ -4,11 +4,12 @@ exports[`Snapshot for no error msg 1`] = `<Fragment />`;
 
 exports[`Snapshot with error msg 1`] = `
 <Fragment>
-  <h2
+  <WithStyles(ForwardRef(Typography))
     className="my-4"
     id="errMsg"
+    variant="h2"
   >
     Sample error text
-  </h2>
+  </WithStyles(ForwardRef(Typography))>
 </Fragment>
 `;

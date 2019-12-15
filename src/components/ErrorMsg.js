@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Typography } from "@material-ui/core";
 
 export const ErrorMsg = props => (
   <>
     {props.errMsg && (
-      <h2 id="errMsg" className="my-4">
+      <Typography variant="h2" id="errMsg" className="my-4">
         {props.errMsg}
-      </h2>
+      </Typography>
     )}
   </>
 );

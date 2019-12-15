@@ -5,23 +5,17 @@ import ReactDOM from "react-dom";
 import configureStore from "./store/configureStore";
 import { Provider } from "react-redux";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { StylesProvider } from "@material-ui/core/styles";
 
 import "./styles/styles.scss";
 
 const store = configureStore;
 
-const theme = createMuiTheme({
-  palette: {
-    type: "dark"
-  }
-});
-
 const jsx = (
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
+    <StylesProvider injectFirst>
       <SpotifyApp />
-    </ThemeProvider>
+    </StylesProvider>
   </Provider>
 );
 

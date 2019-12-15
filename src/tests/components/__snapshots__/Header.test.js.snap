@@ -2,8 +2,7 @@
 
 exports[`Header snapshot test 1`] = `
 <WithStyles(ForwardRef(Typography))
-  component="h3"
-  variant="h5"
+  variant="h1"
 >
   Spotify Manager
 </WithStyles(ForwardRef(Typography))>
