@@ -25,7 +25,6 @@ exports[`Tracked playlist snapshot test 1`] = `
         <WithStyles(ForwardRef(TableCell))>
           <WithStyles(ForwardRef(Typography))
             className="trackedPlaylists-list_item_text"
-            variant="p"
           >
             Big rap playlist
           </WithStyles(ForwardRef(Typography))>
@@ -49,7 +48,6 @@ exports[`Tracked playlist snapshot test 1`] = `
         <WithStyles(ForwardRef(TableCell))>
           <WithStyles(ForwardRef(Typography))
             className="trackedPlaylists-list_item_text"
-            variant="p"
           >
             everything
           </WithStyles(ForwardRef(Typography))>
@@ -73,7 +71,6 @@ exports[`Tracked playlist snapshot test 1`] = `
         <WithStyles(ForwardRef(TableCell))>
           <WithStyles(ForwardRef(Typography))
             className="trackedPlaylists-list_item_text"
-            variant="p"
           >
             :O
           </WithStyles(ForwardRef(Typography))>

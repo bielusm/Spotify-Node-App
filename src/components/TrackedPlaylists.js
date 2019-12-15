@@ -65,10 +65,7 @@ export const TrackedPlaylists = props => (
                 className={"trackedPlaylists-list_item " + plName}
               >
                 <TableCell>
-                  <Typography
-                    variant="p"
-                    className="trackedPlaylists-list_item_text"
-                  >
+                  <Typography className="trackedPlaylists-list_item_text">
                     {playlist.name}
                   </Typography>
                 </TableCell>

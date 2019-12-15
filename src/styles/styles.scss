@@ -5,43 +5,46 @@
 // @import "./components/trackContext";
 
 * {
-    padding: 2px;
+  padding: 2px;
 }
 
 body {
-    background: #121212 !important;
+  background: #121212 !important;
 }
 
 .MuiPaper-root {
-    margin: 10px;
-    background: transparentize($color: white, $amount: 1-0.05)
+  margin: 10px;
+  background: transparentize($color: white, $amount: 1-0.05);
 }
 
 .MuiTypography-h1 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .MuiTypography-h2 {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
-
 .MuiTypography-root {
-    margin: 5px;
-    color: white;
+  margin: 5px;
+  color: white;
 }
 
 .MuiButton-containedPrimary {
-    margin: 5px;
+  margin: 5px;
 }
 
 .MuiTable-root {
-    background: transparentize($color: white, $amount: 1-0.10);
-    margin: 10px 10px;
-    border-radius: 8px;
-    width: 60%;
+  background: transparentize($color: white, $amount: 1-0.1);
+  margin: 10px 10px;
+  border-radius: 8px;
+  width: 60%;
 }
 
 .MuiTableCell-root {
-    color: white;
+  color: white;
+}
+
+.MuiIconButton-root {
+  color: white;
 }
