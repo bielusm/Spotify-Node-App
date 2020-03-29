@@ -2,7 +2,7 @@
 
 exports[`SpotifyApp snapshot test 1`] = `
 <Fragment>
-  <CssBaseline>
+  <WithStyles(CssBaseline)>
     <WithStyles(ForwardRef(Paper))>
       <Header />
       <LoginBtn
@@ -31,6 +31,6 @@ exports[`SpotifyApp snapshot test 1`] = `
         trackedPlaylists={Array []}
       />
     </WithStyles(ForwardRef(Paper))>
-  </CssBaseline>
+  </WithStyles(CssBaseline)>
 </Fragment>
 `;
