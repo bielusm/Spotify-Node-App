@@ -5,7 +5,7 @@ This app allows you to manage your playlists and control your Spotify playlists 
 1. This only works with premium Spotify accounts
 2. This software should be used at your own risk. Consider backing up your playlists before using this program. 
 
-## [Check it out here](https://bielusm.github.io/Spotify-App)
+## [Check it out here](https://spotify.bielusm.me/)
 
 ## Features
 1. Controlling music remotely (next track, prev track, play/pause, like song)
