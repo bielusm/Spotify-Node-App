@@ -20,7 +20,7 @@ export class LoginBtn extends React.Component {
             color="primary"
             onClick={this.login}
           >
-            Log in
+            Log in to spotify
           </Button>
         )}
       </>
